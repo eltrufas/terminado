@@ -1,0 +1,21 @@
+{% extends 'flask_user/public_base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<h1>{%trans%}Register{%endtrans%}</h1>
+
+<form class="form form-horizontal" method="post" role="form">
+  {{ form.hidden_tag() }}
+  {{ wtf.form_errors(form, hiddens="only") }}
+
+  {{ wtf.form_field(form.email) }}
+  {{ wtf.form_field(form.first_name) }}
+  {{ wtf.form_field(form.last_name) }}
+  {{ wtf.form_field(form.institution) }}
+  {{ wtf.form_field(form.password) }}
+  {{ wtf.form_field(form.retype_password) }}
+  {{ wtf.form_field(form.submit) }}
+
+</form>
+
+{% endblock %}
