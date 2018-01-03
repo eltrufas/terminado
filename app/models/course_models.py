@@ -101,8 +101,8 @@ class DidacticInfoForm(FlaskForm):
     bibliografia = StringField('Bibliografía, documentación y materiales de apoyo', validators=[
         DataRequired('El campo de Bibliografía, documentación y materiales de apoyo es obligatorio')
     ])
-    perfil_academico = StringField('Perfil academico del responsable', validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    perfil_academico = StringField('Perfil academico del instructor', validators=[
+        DataRequired('El campo de Perfil academico del instructor es obligatorio')
     ])
     curriculum_sintetico = FileField('Curriculum sintético de el instructor', validators=[
         FileRequired('El campo de Curriculum sintético de el instructor es obligatorio')

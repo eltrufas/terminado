@@ -1,24 +1,64 @@
-{% extends "common/page_base.html" %}  {# common/page_base.html extends layout.html #}
+{% extends "fulllayout.html" %}
 
 {% block content %}
-<h1>Iniciar solicitud</h1>
 
-{% from "common/form_macros.html" import render_field, render_submit_field %}
-
-<form action="" method="POST" class="form" role="form">
-  <div class="row">
-    <div class="col-sm-6 col-md-5 col-lg-4">
-    {{ form.hidden_tag() }}
-
-    {{ render_field(form.nombre, tabindex=240) }}
-
-    {{ render_field(form.contenido_sintetico, tabindex=250) }}
-
-    {{ render_field(form.modalidades_aprendizaje, tabindex=250) }}
-
-    {{ render_submit_field(form.submit, tabindex=280) }}
-    </div>
-  </div>
-</form>
-
+<div class="col-lg-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4>
+				Información de curso
+			</h4>
+		</div>
+		<div class="card-content">
+			<form method="POST">
+				{{ form.hidden_tag() }}
+				<fieldset class="form-group">
+					<label>Nombre del curso</label>
+					{{ form.nombre(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Contenido sintético del curso</label>
+					{{ form.contenido_sintetico(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Modalidades de aprendizaje</label>
+					{{ form.modalidades_aprendizaje(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Modalidades de evaluación</label>
+					{{ form.modalidades_evaluacion(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Bibliografía, documentación y materiales de apoyo</label>
+					{{ form.bibliografia(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Perfil academico del instructor</label>
+					{{ form.perfil_academico(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Curriculum sintético del instructor</label>
+					{{ form.curriculum_sintetico(class="form-control",id="curriculum_sintetico") }}
+					<div class="input-group">
+					<input type="text" readonly="" class="form-control" placeholder="Agregar archivo...">
+						<span class="input-group-btn input-group-sm">
+						  <button type="button" class="btn btn-fab btn-fab-mini">
+						    <i class="material-icons">attach_file</i>
+						  </button>
+						</span>
+					</div>
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Antecedentes o habilidades necesarios de los alumnos</label>
+					{{ form.antecedentes(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>Duración en horas del programa</label>
+					{{ form.duracion(class="form-control") }}
+				</fieldset>
+				{{form.submit(class="btn btn-primary")}}
+			</form>
+		</div>
+	</div>
+</div>
 {% endblock %}

@@ -1,22 +1,29 @@
-{% extends "common/page_base.html" %}  {# common/page_base.html extends layout.html #}
+{% extends "fulllayout.html" %}
 
 {% block content %}
-<h1>Iniciar solicitud</h1>
 
-{% from "common/form_macros.html" import render_field, render_submit_field %}
-
-<form action="" method="POST" class="form" role="form">
-  <div class="row">
-    <div class="col-sm-6 col-md-5 col-lg-4">
-    {{ form.hidden_tag() }}
-
-    {{ render_field(form.other_instructor, tabindex=240) }}
-
-    {{ render_field(form.instructor_email, tabindex=250) }}
-
-    {{ render_submit_field(form.submit, tabindex=280) }}
-    </div>
-  </div>
-</form>
-
+<div class="col-lg-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4>
+				Iniciar solicitud de curso
+			</h4>
+		</div>
+		<div class="card-content">
+			<form method="POST">
+				{{ form.hidden_tag() }}
+				<div class="checkbox checkbox-materia">
+					<label>
+						{{form.other_instructor(id="is_instructor")}} Soy encargado e instructor del curso
+					</label>
+				</div>
+				<fieldset class="form-group" id="mail-field">
+					<label>Correo del instructor</label>
+					{{form.instructor_email(class="form-control",id="instructor_email")}}
+				</fieldset>
+				{{form.submit(class="btn btn-primary")}}
+			</form>
+		</div>
+	</div>
+</div>
 {% endblock %}
