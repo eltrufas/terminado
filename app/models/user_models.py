@@ -35,6 +35,7 @@ class User(db.Model, UserMixin):
 
 
 
+
 # Define the Role data model
 class Role(db.Model):
     __tablename__ = 'roles'

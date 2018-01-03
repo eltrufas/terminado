@@ -11,6 +11,7 @@ from flask_script import Command
 
 from app import db
 from app.models.user_models import User, Role
+from app.models.course_models import Course
 
 class InitDbCommand(Command):
     """ Initialize the database."""
@@ -33,10 +34,12 @@ def create_users():
 
     # Adding roles
     admin_role = find_or_create_role('admin', u'Admin')
+    responsable_role = find_or_create_role('responsable', u'Responsable')
 
     # Add users
     user = find_or_create_user(u'Admin', u'Example', u'admin@example.com', 'Password1', admin_role)
     user = find_or_create_user(u'Member', u'Example', u'member@example.com', 'Password1')
+    user = find_or_create_user(u'Responsable', u'Example', u'responsable@example.com', 'Password1', responsable_role)
 
     # Save to DB
     db.session.commit()
@@ -65,6 +68,3 @@ def find_or_create_user(first_name, last_name, email, password, role=None):
             user.roles.append(role)
         db.session.add(user)
     return user
-
-
-

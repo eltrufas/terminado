@@ -1,0 +1,24 @@
+{% extends "common/page_base.html" %}  {# common/page_base.html extends layout.html #}
+
+{% block content %}
+<h1>Iniciar solicitud</h1>
+
+{% from "common/form_macros.html" import render_field, render_submit_field %}
+
+<form action="" method="POST" class="form" role="form">
+  <div class="row">
+    <div class="col-sm-6 col-md-5 col-lg-4">
+    {{ form.hidden_tag() }}
+
+    {{ render_field(form.nombre, tabindex=240) }}
+
+    {{ render_field(form.contenido_sintetico, tabindex=250) }}
+
+    {{ render_field(form.modalidades_aprendizaje, tabindex=250) }}
+
+    {{ render_submit_field(form.submit, tabindex=280) }}
+    </div>
+  </div>
+</form>
+
+{% endblock %}
