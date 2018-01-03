@@ -15,9 +15,9 @@ main_blueprint = Blueprint('main', __name__, template_folder='templates')
 
 # The Home page is accessible to anyone
 @main_blueprint.route('/')
+@login_required
 def home_page():
-    return render_template('pages/home_page.html')
-
+    return render_template('fulllayout.html')
 
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/member')
