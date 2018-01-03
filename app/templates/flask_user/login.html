@@ -1,0 +1,29 @@
+{%extends "basiclayout.html"%}
+{% block content %}
+<!--
+you can substitue the span of reauth email for a input with the email and
+include the remember me checkbox
+-->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <div class="card">
+                <h4><b>Inicio de sesión</b></h4>
+                <form method="POST">
+                    {{form.csrf_token}}
+                    {{form.email(class="form-control",placeholder="Correo")}}
+                    {{form.password(class="form-control",placeholder="Contraseña")}}
+                    <div id="remember" class="checkbox checkbox-material">
+                        <label>
+                            {{form.remember_me}} Mantener sesión
+                        </label>
+                    </div>
+                    <button class="btn btn-primary btn-block" type="submit">Iniciar sesión</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-4"></div>
+    </div>
+</div>
+{% endblock %}
