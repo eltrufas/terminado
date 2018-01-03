@@ -1,0 +1,13 @@
+<h1>INSTRUCCIONES</h1>
+{% for course in instructor_courses %}
+<p>{{course.id}}</p>
+{% else %}
+No eres instructor de ningun curso
+{% endfor %}
+
+<h1>RESPONSABILDIADAES</h1>
+{% for course in responsable_courses %}
+<p>{{course.id}}</p>
+{% else %}
+No eres responsable de ningun curso
+{% endfor %}
