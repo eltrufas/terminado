@@ -21,6 +21,7 @@ def create_course_request():
     if request.method == 'POST' and form.validate():
         course = Course()
         course.status = CourseStatus.awaiting_didactic_info
+        course.responsable = current_user
 
         if form.other_instructor.data:
 
@@ -51,6 +52,14 @@ def create_course_request():
     return render_template('solicitudes/iniciar_solicitud.html', form=form)
 
 
+@main_blueprint.route('/solicitudes')
+@login_required
+def solicitud_list():
+    return render_template('solicitudes/lista.html',
+                           instructor_courses = current_user.instructor_courses,
+                           responsable_courses = current_user.responsable_courses)
+
+
 @main_blueprint.route('/solicitud/<int:course_id>/didactica', methods=['GET', 'POST'])
 @login_required
 def obtener_info_didactica(course_id):
@@ -60,6 +69,9 @@ def obtener_info_didactica(course_id):
 
     if course.instructor != current_user:
         return abort(403)
+
+    if course.status != CourseStatus.awaiting_didactic_info:
+        return redirect()
 
     form = DidacticInfoForm()
 

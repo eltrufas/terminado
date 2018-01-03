@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, SubmitField, validators
 from wtforms.validators import DataRequired
+from flask_wtf.file import FileField, FileRequired
 from app import db
 import enum
 
@@ -63,15 +64,16 @@ class RequiredIf(validators.DataRequired):
     """
     field_flags = ('requiredif',)
 
-    def __init__(self, other_field_name, message=None, *args, **kwargs):
+    def __init__(self, other_field_name, message=None, negate=False, *args, **kwargs):
         self.other_field_name = other_field_name
         self.message = message
+        self.negate = negate
 
     def __call__(self, form, field):
         other_field = form[self.other_field_name]
         if other_field is None:
             raise Exception('no field named "%s" in form' % self.other_field_name)
-        if bool(other_field.data):
+        if self.negate != bool(other_field.data):
             super(RequiredIf, self).__call__(form, field)
 
 
@@ -102,8 +104,8 @@ class DidacticInfoForm(FlaskForm):
     perfil_academico = StringField('Perfil academico del responsable', validators=[
         DataRequired('El campo de Perfil academico del responsable es obligatorio')
     ])
-    curriculum_sintetico = StringField('Curriculum sintético de el instructor', validators=[
-        DataRequired('El campo de Curriculum sintético de el instructor es obligatorio')
+    curriculum_sintetico = FileField('Curriculum sintético de el instructor', validators=[
+        FileRequired('El campo de Curriculum sintético de el instructor es obligatorio')
     ])
     antecedentes = StringField('Antecedentes o habilidades necesarios de los alumnos', validators=[
         DataRequired('El campo de Antecedentes o habilidades necesarios de los alumnos es obligatorio')
@@ -113,3 +115,8 @@ class DidacticInfoForm(FlaskForm):
     ])
 
     submit = SubmitField("Enviar info")
+
+
+class ReviewDidacticInfoForm(FlaskForm):
+    approved = BooleanField('Aprobado')
+    rejection_reason = BooleanField()
