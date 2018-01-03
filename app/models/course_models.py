@@ -151,5 +151,4 @@ class LogisticInfoForm(FlaskForm):
     fecha_fin = DateField("Fecha de finalización", validators=[
         DataRequired('El campo de Perfil academico del responsable es obligatorio')
     ])
-
     submit = SubmitField("Enviar info")
