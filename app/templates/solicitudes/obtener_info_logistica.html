@@ -1,0 +1,37 @@
+{% extends "fulllayout.html" %}
+
+
+
+{% block content %}
+
+{% from "common/macrongos.html" import render_field %}
+<div class="col-lg-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4>
+				Información de curso
+			</h4>
+		</div>
+		<div class="card-content">
+			<form method="POST" enctype="multipart/form-data">
+				{% for error, message in form.errors.items() %}
+					{{ message }}
+				{% endfor %}
+				{{ form.hidden_tag() }}
+
+        {{ render_field(form.abierto) }}
+        {{ render_field(form.cupo_min, type='number') }}
+        {{ render_field(form.cupo_max, type='number') }} 
+        {{ render_field(form.apoyo_econ) }}
+        {{ render_field(form.apoyo_admin) }}
+        {{ render_field(form.apoyo_servicio) }}
+        {{ render_field(form.apoyo_admin) }}
+        {{ render_field(form.fecha_inicio, type='date') }}
+        {{ render_field(form.fecha_fin, type='date') }}
+
+				{{form.submit(class="btn btn-primary")}}
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}
