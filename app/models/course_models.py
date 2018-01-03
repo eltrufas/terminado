@@ -23,6 +23,7 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     status = db.Column(db.Enum(CourseStatus))
+    reason = db.Column(db.Unicode(500))
 
     nombre = db.Column(db.Unicode(200))
     contenido_sintetico = db.Column(db.Unicode(5000))

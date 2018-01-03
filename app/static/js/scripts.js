@@ -6,4 +6,12 @@ $(document).ready(function() {
 			$('#mail-field').show()
 		}
 	})
+
+	$('#aprobado').click(function() {
+		if($('#rejected_field').is(":visible")) {
+			$('#rejected_field').hide()
+		} else {
+			$('#rejected_field').show()
+		}
+	})
 })

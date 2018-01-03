@@ -4,3 +4,20 @@
   {{ field(class="form-control", type=type) }}
 </fieldset>
 {%- endmacro %}
+
+{% macro render_alert(message, category) %}
+  {% if category == 'success' %}
+    {% set alert_class = 'alert-success' %}
+  {% elif category == 'danger' %}
+    {% set alert_class = 'alert-danger' %}
+  {% else %}
+    {% set alert_class = 'alert-primary' %}
+  {% endif %}
+
+  <div class="alert {{alert_class}}" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{%- endmacro %}

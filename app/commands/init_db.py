@@ -19,6 +19,7 @@ class InitDbCommand(Command):
     def run(self):
         init_db()
 
+
 def init_db():
     """ Initialize the database."""
     db.drop_all()
@@ -37,9 +38,9 @@ def create_users():
     responsable_role = find_or_create_role('responsable', u'Responsable')
 
     # Add users
-    user = find_or_create_user(u'Admin', u'Example', u'admin@example.com', 'Password1', admin_role)
-    user = find_or_create_user(u'Member', u'Example', u'member@example.com', 'Password1')
-    user = find_or_create_user(u'Responsable', u'Example', u'responsable@example.com', 'Password1', responsable_role)
+    user = find_or_create_user(u'Admin', u'Example', u'Persona existente', u'admin@example.com', 'Password1', admin_role)
+    user = find_or_create_user(u'Member', u'Example', u'Persona existente', u'member@example.com', 'Password1')
+    user = find_or_create_user(u'Responsable', u'Example', u'Persona existente', u'responsable@example.com', 'Password1', responsable_role)
 
     # Save to DB
     db.session.commit()
@@ -54,14 +55,14 @@ def find_or_create_role(name, label):
     return role
 
 
-def find_or_create_user(first_name, last_name, cargo='Sr' email, password, role=None):
+def find_or_create_user(first_name, last_name, cargo, email, password, role=None):
     """ Find existing user or create new user """
     user = User.query.filter(User.email == email).first()
     if not user:
         user = User(email=email,
                     first_name=first_name,
                     last_name=last_name,
-                    cargo=cargo
+                    cargo=cargo,
                     password=current_app.user_manager.hash_password(password),
                     active=True,
                     confirmed_at=datetime.datetime.utcnow())

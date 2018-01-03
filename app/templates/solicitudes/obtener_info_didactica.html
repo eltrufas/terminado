@@ -10,6 +10,13 @@
 			</h4>
 		</div>
 		<div class="card-content">
+			{% if course.reason %}
+				<h3>Correcciones solicitadas</h3>
+				<p>
+					{{ course.reason }}
+				</p>
+			{% endif %}
+
 			<form method="POST" enctype="multipart/form-data">
 				{% for error, message in form.errors.items() %}
 					{{ message }}
