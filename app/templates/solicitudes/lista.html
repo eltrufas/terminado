@@ -1,13 +1,67 @@
-<h1>INSTRUCCIONES</h1>
-{% for course in instructor_courses %}
-<p>{{course.id}}</p>
-{% else %}
-No eres instructor de ningun curso
-{% endfor %}
+{% extends "fulllayout.html" %}
 
-<h1>RESPONSABILDIADAES</h1>
-{% for course in responsable_courses %}
-<p>{{course.id}}</p>
-{% else %}
-No eres responsable de ningun curso
-{% endfor %}
+{%block content%}
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4 class="title">Cursos donde es instructor</h4>
+		</div>
+		<div class="card-content table-responsive">
+			<table class="table">
+				{%if instructor_courses is defined and instructor_courses|length > 0%}
+				<thead>
+					<th>Nombre</th>
+					<th>Estado</th>
+				</thead>
+				{%endif%}
+				<tbody>
+					{%for course in instructor_courses%}
+					<tr>
+						<td>
+							{{course.nombre}}
+						</td>
+						<td>
+							{{course.status}}
+						</td>
+					</tr>
+					{%else%}
+					No eres instructor en ningún curso
+					{%endfor%}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4 class="title">Cursos donde es responsable</h4>
+		</div>
+		<div class="card-content table-responsive">
+			<table class="table">
+				{%if instructor_courses is defined and instructor_courses|length > 0%}
+				<thead>
+					<th>Nombre</th>
+					<th>Estado</th>
+				</thead>
+				{%endif%}
+				<tbody>
+					{%for course in responsable_courses%}
+					<tr>
+						<td>
+							{{course.nombre}}
+						</td>
+						<td>
+							{{course.status}}
+						</td>
+					</tr>
+					{%else%}
+					No eres responsable en ningún curso
+					{%endfor%}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{%endblock%}

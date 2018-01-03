@@ -1,0 +1,6 @@
+{# Correo enviado al responsable cuando ya se envio la información didactica #}
+El usuario {{ curso.instructor.first_name }} {{ curso.instructor.last_name }}
+ha enviado los datos didacticos del curso {{ curso.nombre }} y estan listos para
+su revisión. Puede ir a la pagina de revisión directamente aquí
+<a href="{{ url_for('solicitudes.revisar_info_didactica', course_id=course.id, _external=True) }}">aqui</a>
+o puedes acceder desde la lista de solicitudes en el portal.

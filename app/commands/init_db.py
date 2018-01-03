@@ -54,13 +54,14 @@ def find_or_create_role(name, label):
     return role
 
 
-def find_or_create_user(first_name, last_name, email, password, role=None):
+def find_or_create_user(first_name, last_name, cargo='Sr' email, password, role=None):
     """ Find existing user or create new user """
     user = User.query.filter(User.email == email).first()
     if not user:
         user = User(email=email,
                     first_name=first_name,
                     last_name=last_name,
+                    cargo=cargo
                     password=current_app.user_manager.hash_password(password),
                     active=True,
                     confirmed_at=datetime.datetime.utcnow())

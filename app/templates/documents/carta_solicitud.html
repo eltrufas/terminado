@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <p style="text-align:right;">Hermosillo, Son. 16 de agosto de 2016.</p>
+    <p>
+      <b>Dra. Rosa María Montesinos Cisneros</b><br />
+      Directora de la División de <br />
+      Ciencias Exactas y Naturales<br />
+      P r e s e n t e <br />
+    </p>
+    <p>
+      Solicito, a través de su conducto, que el proyecto de curso de actualización intitulado:
+    </p>
+    <p style='margin-left: 1em;'>{{curso.titulo}}</p>
+    <p>
+      sea presentado ante el H. Consejo Divisional que Usted preside para su valoración, y si es el caso, para su aprobación.
+    </p>
+
+    <p>Agradezco su atención y estoy a sus órdenes para cualquier aclaración al respecto.</p>
+
+    <p>
+      <b>{{ curso.responsable.first_name}} {{curso.responsable.last_name }}</b><br />
+      {{curso.responsable.cargo}}
+    </p>
+  </body>
+</html>

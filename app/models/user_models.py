@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='0')
     first_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
     last_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
+    cargo = db.Column(db.Unicode(50), nullable=False, server_default=u'')
 
     institution = db.Column(db.Unicode(50), nullable=False, server_default=u'')
 
@@ -59,6 +60,8 @@ class MyRegisterForm(RegisterForm):
         validators.DataRequired('First name is required')])
     last_name = StringField('Apellidos', validators=[
         validators.DataRequired('Last name is required')])
+    cargo = StringField('Cargo (ej. Profesor titular adscrito al Departamento de Matemáticas de la Universidad de Sonora.)', validators=[
+        validators.DataRequired('Cargo is required')])
     institution = StringField('Institución', validators=[
         validators.DataRequired('Institución es un campo requerido')])
 
