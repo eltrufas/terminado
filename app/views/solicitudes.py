@@ -3,15 +3,20 @@ from flask import request, url_for, current_app, abort
 from flask_user import current_user, login_required, roles_accepted
 from app.util import send_email
 
+from weasyprint import HTML
 
+from os.path import splitext
 import uuid
 
 from app import db
 from app.models.user_models import UserProfileForm
 from app.models.course_models import (StartCourseRequestForm, Course,
-                                      CourseStatus, DidacticInfoForm)
+                                      CourseStatus, DidacticInfoForm,
+                                      LogisticInfoForm)
 
 main_blueprint = Blueprint('solicitudes', __name__, template_folder='templates')
+
+
 
 @main_blueprint.route('/solicitud/iniciar', methods=['GET', 'POST'])
 @roles_accepted('responsable')
@@ -60,6 +65,14 @@ def solicitud_list():
                            responsable_courses = current_user.responsable_courses)
 
 
+def upload_helper(file):
+    id = uuid.uuid4().hex
+    _, extension = splitext(file.filename)
+    filename = '/files/' + id + extension
+    file.save(filename)
+    return filename
+
+
 @main_blueprint.route('/solicitud/<int:course_id>/didactica', methods=['GET', 'POST'])
 @login_required
 def obtener_info_didactica(course_id):
@@ -71,12 +84,80 @@ def obtener_info_didactica(course_id):
         return abort(403)
 
     if course.status != CourseStatus.awaiting_didactic_info:
-        return redirect()
+        return redirect('/')
 
     form = DidacticInfoForm()
 
-    if request.method == 'POST' and form.validate():
+    if form.validate_on_submit():
+        form.populate_obj(course)
+        curriculum_filename = upload_helper(form.curriculum_sintetico)
+        course.curriculum_sintetico_filename = curriculum_filename
+
+        if course.instructor == course.responsable:
+            course.status = CourseStatus.awaiting_logistic_info
+            db.session.commit()
+            return redirect(url_for(''))
+        else:
+            course.status = CourseStatus.awaiting_didactic_review
+            db.session.commit()
+            return render_template('solicitudes/didactic_info_success.html')
+
+
+@main_blueprint.route('/solicitud/<int:course_id>/revisar_didactica')
+@login_required
+def revisar_info_didactica(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return abort(404)
+
+    if course.responsable != current_user:
+        return abort(403)
+
+    if course.status != CourseStatus.awaiting_didactic_review:
+        return redirect('/')
+
+    if form.validate_on_submit():
+        if form.approved:
+            course.status = CourseStatus.awaiting_logistic_info
+            return redirect(url_for('.obtener_info_logistica', curso_id=curso.id))
+        else:
+            return render_template('solicitudes/didactic_info_success.html', curso=curso)
+
+
+@main_blueprint.route('/solicitud/<int:course_id>/logistica', methods=['GET', 'POST'])
+@login_required
+def obtener_info_logistica(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return abort(404)
+
+    if course.responsable != current_user:
+        return abort(403)
+
+    if course.status != CourseStatus.awaiting_logistic_info:
+        return redirect('/')
+
+    form = LogisticInfoForm()
+
+    if form.validate_on_submit():
         form.populate_obj(course)
 
+        course.status = CourseStatus.awaiting_submission
+        db.session.commit()
+        return redirect(url_for(''))
 
-    return render_template('solicitudes/obtener_info_didactica.html', form=form)
+
+@main_blueprint.route('/solicitud/<int:course_id>/documentos.zip', methods=['GET', 'POST'])
+@login_required
+def obtener_documentos(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return abort(404)
+
+    if course.responsable != current_user:
+        return abort(403)
+
+    if course.status != CourseStatus.awaiting_submission:
+        return redirect('/')
+
+    wp = HTML(string=render_template(''))

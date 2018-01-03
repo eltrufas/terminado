@@ -1,20 +1,21 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SubmitField, validators
+from wtforms import StringField, BooleanField, SubmitField, validators, IntegerField, DateField, TextAreaField
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileRequired
 from app import db
 import enum
 
 class CourseStatus(enum.Enum):
-    new = 0
-    awaiting_didactic_info = 1
-    awaiting_didactic_review = 2
-    awaiting_didactic_info_correction = 3
-    awaiting_logistic_info = 4
-    awaiting_submission = 5
-    awaiting_review = 6
-    approved = 7
-    rejected = 8
+    new = 'Nuevo'
+    awaiting_didactic_info = 'Esperando información didactica'
+    awaiting_didactic_review = 'Esperando revisión de información didactica'
+    awaiting_didactic_info_correction = 'Esperando corrección de información didactica'
+    awaiting_logistic_info = 'Esperando información logistica'
+    awaiting_submission = 'Esperando entrega de documentos'
+    awaiting_review = 'Esperando revisión por Consejo Divisional'
+    approved = 'Aprobado'
+    rejected = 'Rechazado'
+
 
 
 class Course(db.Model):
@@ -29,7 +30,7 @@ class Course(db.Model):
     modalidades_evaluacion = db.Column(db.Unicode(5000))
     bibliografia = db.Column(db.Unicode(5000))
     perfil_academico = db.Column(db.Unicode(5000))
-    curriculum_sintetico = db.Column(db.Unicode(5000))
+    curriculum_sintetico_filename = db.Column(db.Unicode(5000))
     antecedentes = db.Column(db.Unicode(5000))
     duracion = db.Column(db.Integer)
 
@@ -40,8 +41,8 @@ class Course(db.Model):
     apoyo_admin = db.Column(db.Unicode(5000))
     apoyo_servicio = db.Column(db.Unicode(5000))
 
-    fecha_inicio = db.Column(db.DateTime)
-    fecha_fin = db.Column(db.DateTime)
+    fecha_inicio = db.Column(db.Date)
+    fecha_fin = db.Column(db.Date)
 
     instructor_email = db.Column(db.String(50))
 
@@ -80,7 +81,7 @@ class RequiredIf(validators.DataRequired):
 class StartCourseRequestForm(FlaskForm):
     other_instructor = BooleanField('Otro usuario será instructor de este curso')
     instructor_email = StringField('Correo del instructor', validators=[
-        RequiredIf('other_instructor','Es necesario especificar el correo del instructor')])
+        RequiredIf('other_instructor','Es necesario especificar el correo del instructor', negate=True)])
 
     submit = SubmitField("Crear solicitud")
 
@@ -89,28 +90,28 @@ class DidacticInfoForm(FlaskForm):
     nombre = StringField('Nombre del curso', validators=[
         DataRequired('El campo de contenido sintetico es obligatorio')
     ])
-    contenido_sintetico = StringField('Contenido sintetico', validators=[
+    contenido_sintetico = TextAreaField('Contenido sintetico', validators=[
         DataRequired('El campo de contenido sintetico es obligatorio')
     ])
-    modalidades_aprendizaje =  StringField('Modalidades o formas de conducción de los procesos de enseñanza y aprendizajes', validators=[
+    modalidades_aprendizaje =  TextAreaField('Modalidades o formas de conducción de los procesos de enseñanza y aprendizajes', validators=[
         DataRequired('El campo Modalidades o formas de conducción de los procesos de enseñanza y aprendizajes es requerido')
     ])
-    modalidades_evaluacion = StringField('Las modalidades y requisitos de evaluación y acreditación', validators=[
+    modalidades_evaluacion = TextAreaField('Las modalidades y requisitos de evaluación y acreditación', validators=[
         DataRequired('Las modalidades y requisitos de evaluación y acreditación')
     ])
-    bibliografia = StringField('Bibliografía, documentación y materiales de apoyo', validators=[
+    bibliografia = TextAreaField('Bibliografía, documentación y materiales de apoyo', validators=[
         DataRequired('El campo de Bibliografía, documentación y materiales de apoyo es obligatorio')
     ])
-    perfil_academico = StringField('Perfil academico del responsable', validators=[
+    perfil_academico = TextAreaField('Perfil academico del responsable', validators=[
         DataRequired('El campo de Perfil academico del responsable es obligatorio')
     ])
     curriculum_sintetico = FileField('Curriculum sintético de el instructor', validators=[
         FileRequired('El campo de Curriculum sintético de el instructor es obligatorio')
     ])
-    antecedentes = StringField('Antecedentes o habilidades necesarios de los alumnos', validators=[
+    antecedentes = TextAreaField('Antecedentes o habilidades necesarios de los alumnos', validators=[
         DataRequired('El campo de Antecedentes o habilidades necesarios de los alumnos es obligatorio')
     ])
-    duracion = StringField('Duración en horas del programa', validators=[
+    duracion = IntegerField('Duración en horas del programa', validators=[
         DataRequired('El campo de Duración en horas del programa es obligatorio')
     ])
 
@@ -119,4 +120,37 @@ class DidacticInfoForm(FlaskForm):
 
 class ReviewDidacticInfoForm(FlaskForm):
     approved = BooleanField('Aprobado')
-    rejection_reason = BooleanField()
+    rejection_reason = StringField('Razon de rechazo', validators=[
+        RequiredIf('approved', 'El campo de Razon de rechazo es requerido.', negate=True)
+    ])
+
+    submit = SubmitField("Enviar revisión")
+
+
+class LogisticInfoForm(FlaskForm):
+    abierto = BooleanField("Abierto para el publico", validators=[
+        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    ])
+    cupo_min = IntegerField("Cupo minimo", validators=[
+        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    ])
+    cupo_max = IntegerField("Cupo maximo", validators=[
+        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    ])
+    apoyo_econ = TextAreaField("Apoyo economico", validators=[
+        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    ])
+    apoyo_admin = TextAreaField("Apoyo economico", validators=[
+        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    ])
+    apoyo_servicio = TextAreaField("Apoyo economico", validators=[
+        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    ])
+    fecha_inicio = DateField("Apoyo economico", validators=[
+        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    ])
+    fecha_fin = DateField("Apoyo economico", validators=[
+        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    ])
+
+    submit = SubmitField("Enviar info")
