@@ -10,6 +10,19 @@ include the remember me checkbox
         <div class="col-lg-4">
             <div class="card">
                 <h4><b>Inicio de sesión</b></h4>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% from "common/macrongos.html" import render_alert %}
+
+                  {% if messages %}
+                    <div class="row">
+                      <div class="col-md-12">
+                        {% for category, message in messages %}
+                          {{ render_alert(message, category) }}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endwith %}
                 <form method="POST">
                     {{form.csrf_token}}
                     {{form.email(class="form-control",placeholder="Correo")}}
