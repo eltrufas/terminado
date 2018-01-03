@@ -61,7 +61,7 @@ class MyRegisterForm(RegisterForm):
     last_name = StringField('Apellidos', validators=[
         validators.DataRequired('Last name is required')])
     cargo = StringField('Cargo (ej. Profesor titular adscrito al Departamento de Matemáticas de la Universidad de Sonora.)', validators=[
-        validators.DataRequired('Cargo is required')]))
+        validators.DataRequired('Cargo is required')])
     institution = StringField('Institución', validators=[
         validators.DataRequired('Institución es un campo requerido')])
 

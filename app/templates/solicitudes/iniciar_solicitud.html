@@ -11,6 +11,9 @@
 		</div>
 		<div class="card-content">
 			<form method="POST">
+				{% for error, message in form.errors.items() %}
+					{{ message }}
+				{% endfor %}
 				{{ form.hidden_tag() }}
 				<div class="checkbox checkbox-materia">
 					<label>

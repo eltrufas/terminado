@@ -3,8 +3,6 @@ from flask import request, url_for, current_app, abort
 from flask_user import current_user, login_required, roles_accepted
 from app.util import send_email
 
-from weasyprint import HTML
-
 from os.path import splitext
 import uuid
 
@@ -23,12 +21,13 @@ main_blueprint = Blueprint('solicitudes', __name__, template_folder='templates')
 def create_course_request():
     form = StartCourseRequestForm(request.form)
 
-    if request.method == 'POST' and form.validate():
+    if form.validate_on_submit():
         course = Course()
         course.status = CourseStatus.awaiting_didactic_info
         course.responsable = current_user
 
-        if form.other_instructor.data:
+        print(form.other_instructor.data)
+        if not form.other_instructor.data:
 
             email = form.instructor_email.data
             instructor, _ = current_app.user_manager.find_user_by_email(email)
@@ -68,7 +67,7 @@ def solicitud_list():
 def upload_helper(file):
     id = uuid.uuid4().hex
     _, extension = splitext(file.filename)
-    filename = '/files/' + id + extension
+    filename = 'files/' + id + extension
     file.save(filename)
     return filename
 
@@ -88,19 +87,23 @@ def obtener_info_didactica(course_id):
 
     form = DidacticInfoForm()
 
+    print(form.curriculum_sintetico.data)
+
     if form.validate_on_submit():
         form.populate_obj(course)
-        curriculum_filename = upload_helper(form.curriculum_sintetico)
+        curriculum_filename = upload_helper(form.curriculum_sintetico.data)
         course.curriculum_sintetico_filename = curriculum_filename
 
         if course.instructor == course.responsable:
             course.status = CourseStatus.awaiting_logistic_info
             db.session.commit()
-            return redirect(url_for(''))
+            return redirect(url_for('.obtener_info_logistica', course_id=course.id))
         else:
             course.status = CourseStatus.awaiting_didactic_review
             db.session.commit()
             return render_template('solicitudes/didactic_info_success.html')
+
+    return render_template('solicitudes/obtener_info_didactica.html', form=form)
 
 
 @main_blueprint.route('/solicitud/<int:course_id>/revisar_didactica')
@@ -145,6 +148,8 @@ def obtener_info_logistica(course_id):
         course.status = CourseStatus.awaiting_submission
         db.session.commit()
         return redirect(url_for(''))
+
+    return render_template('solicitudes/obtener_info_logistica.html', form=form)
 
 
 @main_blueprint.route('/solicitud/<int:course_id>/documentos.zip', methods=['GET', 'POST'])

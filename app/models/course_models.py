@@ -99,20 +99,13 @@ class DidacticInfoForm(FlaskForm):
     modalidades_evaluacion = TextAreaField('Las modalidades y requisitos de evaluación y acreditación', validators=[
         DataRequired('Las modalidades y requisitos de evaluación y acreditación')
     ])
+    perfil_academico = TextAreaField("Perfil academico del instructor", validators=[
+        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+    ])
     bibliografia = TextAreaField('Bibliografía, documentación y materiales de apoyo', validators=[
         DataRequired('El campo de Bibliografía, documentación y materiales de apoyo es obligatorio')
     ])
-<<<<<<< HEAD
-    perfil_academico = TextAreaField('Perfil academico del responsable', validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
-=======
-    perfil_academico = StringField('Perfil academico del instructor', validators=[
-        DataRequired('El campo de Perfil academico del instructor es obligatorio')
->>>>>>> 259786b97de622b4f36785c0459560ccf171b84d
-    ])
-    curriculum_sintetico = FileField('Curriculum sintético de el instructor', validators=[
-        FileRequired('El campo de Curriculum sintético de el instructor es obligatorio')
-    ])
+    curriculum_sintetico = FileField('Curriculum sintético de el instructor', validators=[])
     antecedentes = TextAreaField('Antecedentes o habilidades necesarios de los alumnos', validators=[
         DataRequired('El campo de Antecedentes o habilidades necesarios de los alumnos es obligatorio')
     ])
@@ -145,16 +138,16 @@ class LogisticInfoForm(FlaskForm):
     apoyo_econ = TextAreaField("Apoyo economico", validators=[
         DataRequired('El campo de Perfil academico del responsable es obligatorio')
     ])
-    apoyo_admin = TextAreaField("Apoyo economico", validators=[
+    apoyo_admin = TextAreaField("Apoyo administrativo", validators=[
         DataRequired('El campo de Perfil academico del responsable es obligatorio')
     ])
-    apoyo_servicio = TextAreaField("Apoyo economico", validators=[
+    apoyo_servicio = TextAreaField("Apoyos de servicio existentes y solicitado", validators=[
         DataRequired('El campo de Perfil academico del responsable es obligatorio')
     ])
-    fecha_inicio = DateField("Apoyo economico", validators=[
+    fecha_inicio = DateField("Fecha de inicio", validators=[
         DataRequired('El campo de Perfil academico del responsable es obligatorio')
     ])
-    fecha_fin = DateField("Apoyo economico", validators=[
+    fecha_fin = DateField("Fecha de finalización", validators=[
         DataRequired('El campo de Perfil academico del responsable es obligatorio')
     ])
 
