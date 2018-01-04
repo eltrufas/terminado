@@ -1,9 +1,7 @@
 {% extends "fulllayout.html" %}
-
+{%set navigation_active="lista_solicitudes"%}
+{%block header%}Lista de solicitudes{%endblock%}
 {%block content%}
-<div class="xd">
-	
-</div>
 <div class="row">
 <div class="col-md-12">
 	<div class="card">
@@ -22,7 +20,7 @@
 				{%endif%}
 				<tbody>
 					{%for course in solicitudes%}
-					<tr>
+					<tr class="cursor-pointer clickable-row" data-href="solicitud/{{course.id}}">
 						<td>
 							{{course.nombre}}
 						</td>

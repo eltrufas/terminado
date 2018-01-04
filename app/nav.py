@@ -15,7 +15,9 @@ def init_nav(app):
 
             # cosas del consejo
             if admin_role in current_user.roles:
-                navigation_bar.extend([])
+                navigation_bar.extend([
+                    ("Lista de solicitudes","lista_solicitudes",url_for('solicitudes.lista_consejo'),"list")
+                ])
 
             # cosas del responsable
             if responsable_role in current_user.roles:
