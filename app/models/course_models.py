@@ -74,6 +74,9 @@ class Course(db.Model):
     instructor = db.relationship("User", foreign_keys=[instructor_id],
                                  backref='instructor_courses')
 
+    def informe_listo(self):
+        return self.autofinanciamiento is not None
+
     def num_participantes(self):
         return len(self.inscritos)
 

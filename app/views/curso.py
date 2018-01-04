@@ -110,6 +110,31 @@ def retroalimentacion(course_id):
     return render_template("cursos/retroalimentacion.html",form=form,curso=course)
 
 
+@curso_blueprint.route('/curso/<int:course_id>/constancias.zip')
+def constancias(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return abort(404)
+
+    wp_carta = HTML(string=render_template('documents/carta_solicitud.html', curso=course))
+
+    wp_registro = HTML(string=render_template('documents/registro_curso.html', curso=course))
+
+    fp = tempfile.TemporaryFile()
+    with zipfile.ZipFile(fp, mode='w') as zf:
+        zf.writestr('carta_solicitud.pdf', wp_carta.write_pdf())
+        zf.writestr('registro_curso.pdf', wp_registro.write_pdf())
+
+        _, extension = splitext(course.curriculum_sintetico_filename)
+
+        zf.write('files/{}'.format(course.curriculum_sintetico_filename),
+            arcname='curriculum.{}'.format(extension))
+
+
+    fp.seek(0)
+    return send_file(fp, attachment_filename='documentos_{}.zip'.format(course.id))
+
+
 @curso_blueprint_route('/curso/<int:course_id>/informe.pdf')
 @roles_accepted('responsable')
 def informe(curso_id):

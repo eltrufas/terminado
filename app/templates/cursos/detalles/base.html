@@ -21,12 +21,17 @@
   		</div>
       <div class="card-content">
         {% block actions %}
-          {% if curso.responsable == current_user %}
+          {% if curso.responsable == current_user and curso.informe_listo() %}
 
-            <a href="{{url_for('static', filename='retro.rtf')}}">Descargar formulario de retroalimentaciones</a><br><hr>
-            <a href="{{ url_for('curso.retroalimentacion', course_id=curso.id)}}">Capturar retroalimentación</a><hr>
-            {% if curso.status.value == "Finalizado" %}
-              <a href="{{url_for('curso.info_informe', curso_id=curso.id)}}">Caputrar resultados de curso</a>
+            <a href="{{url_for('curso.informe', course_id=curso.id)}}">Informe del curso</a>
+          {% else %}
+            {% if curso.responsable == current_user %}
+
+              <a href="{{url_for('static', filename='retro.rtf')}}">Descargar formulario de retroalimentaciones</a><br><hr>
+              <a href="{{ url_for('curso.retroalimentacion', course_id=curso.id)}}">Capturar retroalimentación</a><hr>
+              {% if curso.status.value == "Finalizado" %}
+                <a href="{{url_for('curso.info_informe', curso_id=curso.id)}}">Caputrar resultados de curso</a>
+              {% endif %}
             {% endif %}
           {% endif %}
           {% if curso.responsable == current_user and curso.allow_inscription_toggle() %}
