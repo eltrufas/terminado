@@ -18,7 +18,7 @@ def course_details(course_id):
     if not course:
         return abort(404)
 
-    return render_template('cursos/details/base.html', curso=course)
+    return render_template('cursos/detalles/base.html', curso=course)
 
 
 @curso_blueprint.route('/curso/<int:course_id>/toggle_inscripcion')
@@ -70,7 +70,7 @@ def mis_cursos():
         cursos_instructor=cursos_instructor)
 
 
-@curso_blueprint.route('/curso/<int:curso_id>/inscritos')
+@curso_blueprint.route('/curso/<int:course_id>/inscritos')
 def lista_inscritos(course_id):
     course = Course.query.get(course_id)
     if not course:
