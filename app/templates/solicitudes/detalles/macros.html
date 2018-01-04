@@ -1,51 +1,116 @@
 {% macro detalles_curso(curso) %}
-<dl>
-  <dt>Responsable del curso</dt>
-  <dd>{{ curso.responsable.full_name() }}</dd>
-  <dt>Instructor del curso</dt>
-  <dd>{{ curso.instructor_name_or_email() }}</dd>
+<div class="row">
+  <div class="col-lg-4">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">Responsable del curso</label>
+      <input class="form-control cursor-default" type="text" value="{{ curso.responsable.full_name() }}" disabled>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">instructor del curso</label>
+      <input class="form-control cursor-default" type="text" value="{{ curso.instructor_name_or_email() }}" disabled>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">Estado del curso</label>
+      <input class="form-control cursor-default" type="text" value="{{ curso.status.value }}" disabled>
+    </fieldset>
+  </div>
+</div>
 
-  <dt>Status</dt>
-  <dd>{{ curso.status.value }}</dd>
+{% if curso.has_didactic_info() %}
+<div class="row">
+  <div class="col-lg-6">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">Nombre del curso</label>
+      <input class="form-control cursor-default" type="text" value="{{ curso.nombre }}" disabled>
+    </fieldset>
+  </div>
+  <div class="col-lg-6">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">Duración en horas</label>
+      <input class="form-control cursor-default" type="text" value="{{ curso.duracion }}" disabled>
+    </fieldset>
+  </div>
+</div>
+<fieldset class="form-group label-floating is-focused">
+  <label class="control-label">Contenido sintético</label>
+  <textarea class="form-control cursor-default" disabled>{{ curso.contenido_sintetico }}</textarea>
+</fieldset>
+<fieldset class="form-group label-floating is-focused">
+  <label class="control-label">Modalidades o formas de conducción de los procesos de enseñanza y aprendizajes</label>
+  <textarea class="form-control cursor-default" disabled>{{ curso.modalidades_aprendizaje }}</textarea>
+</fieldset>
+<fieldset class="form-group label-floating is-focused">
+  <label class="control-label">Las modalidades y requisitos de evaluación y acreditación</label>
+  <textarea class="form-control cursor-default" disabled>{{ curso.modalidades_evaluacion }}</textarea>
+</fieldset>
+<fieldset class="form-group label-floating is-focused">
+  <label class="control-label">Perfil academico del instructor</label>
+  <textarea class="form-control cursor-default" disabled>{{ curso.perfil_academico }}</textarea>
+</fieldset>
+<fieldset class="form-group label-floating is-focused">
+  <label class="control-label">Antecedentes o habilidades necesarios de los alumnos</label>
+  <textarea class="form-control cursor-default" disabled>{{ curso.antecedentes }}</textarea>
+</fieldset>
 
-  {% if curso.has_didactic_info() %}
-  <dt>Nombre del curso</dt>
-  <dd>{{ curso.nombre }}</dd>
-  <dt>Contenido sintético</dt>
-  <dd>{{ curso.contenido_sintetico }}</dd>
-  <dt>Modalidades o formas de conducción de los procesos de enseñanza y aprendizajes</dt>
-  <dd>{{ curso.modalidades_aprendizaje }}</dd>
-  <dt>Las modalidades y requisitos de evaluación y acreditación</dt>
-  <dd>{{ curso.modalidades_evaluacion }}</dd>
-  <dt>Perfil academico del instructor</dt>
-  <dd>{{ curso.perfil_academico }}</dd>
-  <dt>
-    <a href="{{url_for('main.get_file', filename=curso.curriculum_sintetico_filename)}}">
-      Curriculum sintético del instructor
-    </a>
-  </dt>
-  <dt>Antecedentes o habilidades necesarios de los alumnos</dt>
-  <dd>{{ curso.antecedentes }}</dd>
-  <dt>Duración en horas</dt>
-  <dd>{{ curso.duracion }}</dd>
-  {% endif %}
-  {% if curso.has_logistic_info() %}
-  <dt>Disponiblidad</dt>
-  <dd>{{ "Abierto al publico" if curso.abierto else "Solo para miembros de la universidad"}}</dd>
-  <dt>Cupo minimo</dt>
-  <dd>{{ curso.cupo_min }}</dd>
-  <dt>Cupo max</dt>
-  <dd>{{ curso.cupo_max }}</dd>
-  <dt>Apoyo económico</dt>
-  <dd>{{ curso.apoyo_econ }}</dd>
-  <dt>Apoyo administrativo</dt>
-  <dd>{{ curso.apoyo_admin }}</dd>
-  <dt>Apoyos de servicio existentes y solicitado</dt>
-  <dd>{{ curso.apoyo_servicio }}</dd>
-  <dt>Fecha inicio</dt>
-  <dd>{{ curso.fecha_inicio.strftime('%Y-%m-%d') }}</dd>
-  <dt>Fecha fin</dt>
-  <dd>{{ curso.fecha_fin.strftime('%Y-%m-%d') }}</dd>
-  {% endif %}
-</dl>
+{% endif %}
+
+{% if curso.has_logistic_info() %}
+<div class="row">
+  <div class="col-lg-4">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">Disponiblidad</label>
+      <input class="form-control cursor-default" type="text" value="{{ "Abierto al publico" if curso.abierto else "Solo para miembros de la universidad"}}" disabled>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">Cupo mínimo</label>
+      <input class="form-control cursor-default" type="text" value="{{ curso.cupo_min }}" disabled>
+    </fieldset>
+  </div>
+  <div class="col-lg-4">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">Cupo máximo</label>
+      <input class="form-control cursor-default" type="text" value="{{ curso.cupo_max }}" disabled>
+    </fieldset>
+  </div>
+</div>
+<fieldset class="form-group label-floating is-focused">
+  <label class="control-label">Apoyo económico</label>
+  <textarea class="form-control cursor-default" disabled>{{ curso.apoyo_econ }}</textarea>
+</fieldset>
+<fieldset class="form-group label-floating is-focused">
+  <label class="control-label">Apoyo administrativo</label>
+  <textarea class="form-control cursor-default" disabled>{{ curso.apoyo_admin }}</textarea>
+</fieldset>
+<fieldset class="form-group label-floating is-focused">
+  <label class="control-label">Apoyos de servicio existentes y solicitados</label>
+  <textarea class="form-control cursor-default" disabled>{{ curso.apoyo_servicio }}</textarea>
+</fieldset>
+<div class="row">
+  <div class="col-lg-6">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">Fecha de inicio</label>
+      <input class="form-control cursor-default" type="text" value="{{ curso.fecha_inicio.strftime('%Y-%m-%d') }}" disabled>
+    </fieldset>
+  </div>
+  <div class="col-lg-6">
+    <fieldset class="form-group label-floating is-focused">
+      <label class="control-label">Fecha de finalización</label>
+      <input class="form-control cursor-default" type="text" value="{{ curso.fecha_fin.strftime('%Y-%m-%d') }}" disabled>
+    </fieldset>
+  </div>
+</div>
+{% endif %}
+
+{% if curso.has_didactic_info() %}
+  <a href="{{url_for('main.get_file', filename=curso.curriculum_sintetico_filename)}}" class="btn btn-primary btn-block">
+    <i class="fa fa-download"></i> Descargar el curriculum sintético del instructor 
+  </a>
+{% endif %}
+
 {%- endmacro %}

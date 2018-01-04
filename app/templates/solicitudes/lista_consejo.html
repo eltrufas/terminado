@@ -1,6 +1,9 @@
 {% extends "fulllayout.html" %}
 
 {%block content%}
+<div class="xd">
+	
+</div>
 <div class="row">
 <div class="col-md-12">
 	<div class="card">
@@ -8,7 +11,8 @@
 			<h4 class="title">Solicitudes de registro de curso pendientes de revisión</h4>
 		</div>
 		<div class="card-content table-responsive">
-			<table class="table">
+
+			<table class="table table-hover">
 				{%if  solicitudes|length > 0%}
 				<thead>
 					<th>Nombre</th>
@@ -17,7 +21,7 @@
 				</thead>
 				{%endif%}
 				<tbody>
-					{%for course in instructor_courses%}
+					{%for course in solicitudes%}
 					<tr>
 						<td>
 							{{course.nombre}}
