@@ -9,7 +9,10 @@ def init_nav(app):
         responsable_role = Role.query.filter(Role.name == 'responsable').one()
 
         # cosas comunes
-        navigation_bar = [("Mis cursos", "mis_cursos",url_for('curso.mis_cursos'),"note")]
+        navigation_bar = [
+            ("Inicio", "inicio", url_for('main.home_page'),"dashboard"),
+            ("Mis cursos", "mis_cursos",url_for('curso.mis_cursos'),"note")
+        ]
 
         if current_user.is_authenticated:
 
