@@ -3,7 +3,7 @@ from flask import request, url_for, current_app, abort, flash, send_file
 from flask_user import current_user, login_required, roles_accepted
 from app.util import send_email
 from app import db
-from app.models.course_models import (RetroalimentacionForm,StartCourseRequestForm, Course,
+from app.models.course_models import (Retroalimentacion,RetroalimentacionForm,StartCourseRequestForm, Course,
                                       CourseStatus, DidacticInfoForm,
                                       LogisticInfoForm, ReviewDidacticInfoForm,
                                       Inscripcion, EvaluarListaAlumnosForm, EvaluarAlumnoForm)
@@ -98,8 +98,9 @@ def retroalimentacion(course_id):
     form = RetroalimentacionForm()
 
     if form.validate_on_submit():
-        retro = Retroalimentacion(form)
-        retro.curso = curso
+        retro = Retroalimentacion()
+        form.populate_obj(retro)
+        retro.curso = course
 
         db.session.add(retro)
 
