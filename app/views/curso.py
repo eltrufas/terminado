@@ -6,7 +6,9 @@ from app import db
 from app.models.course_models import (StartCourseRequestForm, Course,
                                       CourseStatus, DidacticInfoForm,
                                       LogisticInfoForm, ReviewDidacticInfoForm,
-                                      Inscripcion)
+                                      Inscripcion, EvaluarListaAlumnosForm, EvaluarAlumnoForm)
+
+import re
 
 
 curso_blueprint = Blueprint('curso', __name__, template_folder='templates')
@@ -70,9 +72,45 @@ def mis_cursos():
         cursos_instructor=cursos_instructor)
 
 
-@curso_blueprint.route('/curso/<int:course_id>/inscritos')
+@curso_blueprint.route('/curso/<int:course_id>/inscritos', methods=['POST', 'GET'])
 def lista_inscritos(course_id):
     course = Course.query.get(course_id)
     if not course:
         return abort(404)
-    return render_template('cursos/inscritos.html', curso=course)
+
+    nombres = []
+    ids = []
+
+    form = None
+    if course.status == CourseStatus.finalized:
+        forms=[]
+        for inscripcion in course.inscritos:
+            f = EvaluarAlumnoForm(aprobado=False)
+            f.user_id.data = inscripcion.asistente.id
+            f.user_name.data = inscripcion.asistente.full_name()
+            print(inscripcion.acreditado)
+            f.aprobado.data = False
+            print(f.aprobado.data)
+            nombres.append(inscripcion.asistente.full_name())
+            ids.append(inscripcion.asistente.id)
+            forms.append(f)
+
+        form = EvaluarListaAlumnosForm(alumnos=forms)
+
+        if form.validate_on_submit():
+            for i, alumno in enumerate(form.alumnos):
+                user_id = ids[i]
+                aprobado = alumno.aprobado.data
+                ins = Inscripcion.query.filter(Inscripcion.curso_id==course.id, Inscripcion.asistente_id==user_id).one()
+
+                ins.acreditado = aprobado
+
+            course.calificado = True
+
+            db.session.commit()
+
+            flash('Evaluación exitosa')
+
+            return redirect(url_for('.course_details', course_id=course.id))
+
+    return render_template('cursos/inscritos.html', curso=course, form=form, nombres=nombres)
