@@ -30,7 +30,6 @@ def create_course_request():
         course.status = CourseStatus.awaiting_didactic_info
         course.responsable = current_user
 
-        print(form.other_instructor.data)
         if not form.other_instructor.data:
 
             email = form.instructor_email.data
@@ -218,10 +217,6 @@ def obtener_documentos(course_id):
     wp_carta = HTML(string=render_template('documents/carta_solicitud.html', curso=course))
 
     wp_registro = HTML(string=render_template('documents/registro_curso.html', curso=course))
-
-    print('a')
-    print(wp_registro.write_pdf())
-    print('a')
 
     fp = tempfile.TemporaryFile()
     with zipfile.ZipFile(fp, mode='w') as zf:
