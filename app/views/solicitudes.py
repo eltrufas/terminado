@@ -215,12 +215,24 @@ def obtener_documentos(course_id):
     if course.status != CourseStatus.awaiting_submission:
         return redirect('/')
 
-    wp = HTML(string=render_template('documents/carta_solicitud.html', curso=course))
+    wp_carta = HTML(string=render_template('documents/carta_solicitud.html', curso=course))
 
+    wp_registro = HTML(string=render_template('documents/registro_curso.html', curso=course))
+
+    print('a')
+    print(wp_registro.write_pdf())
+    print('a')
 
     fp = tempfile.TemporaryFile()
     with zipfile.ZipFile(fp, mode='w') as zf:
-        zf.writestr('carta_solicitud.pdf', wp.write_pdf())
+        zf.writestr('carta_solicitud.pdf', wp_carta.write_pdf())
+        zf.writestr('registro_curso.pdf', wp_registro.write_pdf())
+
+        _, extension = splitext(course.curriculum_sintetico_filename)
+
+        zf.write('files/{}'.format(course.curriculum_sintetico_filename),
+            arcname='curriculum.{}'.format(extension))
+
 
     fp.seek(0)
     return send_file(fp, attachment_filename='documentos_{}.zip'.format(course.id))
