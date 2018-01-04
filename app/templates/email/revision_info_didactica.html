@@ -1,1 +1,12 @@
 {# cuando el responsable revisó la info didactica del instructor #}
+El responsable del curso {{ curso.responsable.first_name }} {{ curso.responsable.last_name }} ha
+evaluado la información didactica del curso {{ curso.nombre }} y ha concluido que la información proporcionada es
+
+{% if curso.status.value ==  'Esperando corrección de información didactica' %}
+{# rechazado FeelsBadMan #}
+es incorrecta y necesita revisión citando la siguiente razón:
+{{ curso.reason }}
+{% else %}
+es correcta y satisface los criterios establecidos. Con esto el proceso de registro de curso puede continuar.
+{# aprobado FeelsGoodMan #}
+{% endif %}
