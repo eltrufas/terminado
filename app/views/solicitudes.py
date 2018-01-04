@@ -294,7 +294,7 @@ def solicitud_details(course_id):
     elif course.status == CourseStatus.awaiting_didactic_info_correction and current_user == course.instructor:
         return render_template('solicitudes/detalles/didactic_correction.html')
     elif course.status == CourseStatus.awaiting_logistic_info and current_user == course.responsable:
-        return render_template('solicitudes/detalles/logistic.html',return redirect('.solicitud_return redirect('.solicitud_return redirect('.solicitud_list')list')list') curso=course)
+        return render_template('solicitudes/detalles/logistic.html', curso=course)
     elif course.status == CourseStatus.awaiting_submission:
         if current_user == course.responsable:
             return render_template('solicitudes/detalles/documents.html', curso=course)
