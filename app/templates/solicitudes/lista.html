@@ -1,12 +1,12 @@
 {% extends "fulllayout.html" %}
-{%block header%}Lista de cursos{%endblock%}
+{%block header%}Mis solicitudes{%endblock%}
 {%set navigation_active="mis_solicitudes"%}
 {%block content%}
 <div class="row">
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header" data-background-color="purple">
-			<h4 class="title">Cursos donde es instructor</h4>
+			<h4 class="title">Solicitudes donde es instructor</h4>
 		</div>
 		<div class="card-content table-responsive">
 			<table class="table table-hover">
@@ -21,7 +21,11 @@
 					{%for course in instructor_courses%}
 					<tr class="cursor-pointer clickable-row" data-href="solicitud/{{course.id}}">
 						<td>
+							{%if course.nombre is not none%}
 							{{course.nombre}}
+							{%else%}
+							Sin asignar
+							{%endif%}
 						</td>
 						<td>
 							{{ course.responsable.full_name() }}
@@ -44,7 +48,7 @@
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-header" data-background-color="purple">
-			<h4 class="title">Cursos donde es responsable</h4>
+			<h4 class="title">Solicitudes donde es responsable</h4>
 		</div>
 		<div class="card-content table-responsive">
 			<table class="table table-hover">
@@ -59,7 +63,11 @@
 					{%for course in responsable_courses%}
 					<tr class="cursor-pointer clickable-row" data-href="solicitud/{{course.id}}">
 						<td>
+							{%if course.nombre is not none%}
 							{{course.nombre}}
+							{%else%}
+							Sin asignar
+							{%endif%}
 						</td>
 						<td>
 							{{ course.instructor_name_or_email() }}

@@ -1,0 +1,106 @@
+{% extends "fulllayout.html" %}
+{%block header%}Mis cursos{%endblock%}
+{%set navigation_active="mis_cursos"%}
+{%block content%}
+<div class="col-md-12">
+	<div class="card card-nav-tabs">
+		<div class="card-header" data-background-color="purple">
+			<div class="nav-tabs-navigation">
+				<div class="nav-tabs-wrapper">
+					<span class="nav-tabs-title">Cursos:</span>
+					<ul class="nav nav-tabs" data-tabs="tabs">
+						<li class="active">
+							<a href="#responsable" data-toggle="tab">
+								<i class="material-icons">assignment</i>
+								Donde soy responsable
+							<div class="ripple-container"></div></a>
+						</li>
+						<li class="">
+							<a href="#instructor" data-toggle="tab">
+								<i class="material-icons">note</i>
+								Donde soy instructor
+							<div class="ripple-container"></div></a>
+						</li>
+						<li class="">
+							<a href="#inscrito" data-toggle="tab">
+								<i class="material-icons">face</i>
+								Donde estoy inscrito
+							<div class="ripple-container"></div></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="card-content">
+			<div class="tab-content">
+				<div class="tab-pane active" id="responsable">
+					<table class="table table-hover">
+						{%if cursos_responsable is defined and cursos_responsable|length > 0%}
+						<thead>
+							<th>Nombre</th>
+							<th>Instructor</th>
+						</thead>
+						{%endif%}
+						{%for course in cursos_responsable%}
+						<tr class="cursor-pointer clickable-row" data-href="curso/{{course.id}}">
+							<td>
+								{{course.nombre}}
+							</td>
+							<td>
+								{{ course.instructor.full_name() }}
+							</td>
+						</tr>
+						{%else%}
+						No eres responsable en ningún curso
+						{%endfor%}
+					</table>
+				</div>
+				<div class="tab-pane" id="instructor">
+					<table class="table table-hover">
+						{%if cursos_instructor is defined and cursos_instructor|length > 0%}
+						<thead>
+							<th>Nombre</th>
+							<th>Responsable</th>
+						</thead>
+						{%endif%}
+						{%for course in cursos_instructor%}
+						<tr class="cursor-pointer clickable-row" data-href="curso/{{course.id}}">
+							<td>
+								{{course.nombre}}
+							</td>
+							<td>
+								{{ course.responsable.full_name() }}
+							</td>
+						</tr>
+						{%else%}
+						No eres instructor en ningún curso
+						{%endfor%}
+					</table>
+				</div>
+				<div class="tab-pane" id="inscrito">
+					<table class="table table-hover">
+						{%if cursos_inscritos is defined and cursos_inscritos|length > 0%}
+						<thead>
+							<th>Nombre</th>
+							<th>Instructor</th>
+						</thead>
+						{%endif%}
+						{%for course in cursos_inscritos%}
+						<tr class="cursor-pointer clickable-row" data-href="curso/{{course.id}}">
+							<td>
+								{{course.nombre}}
+							</td>
+							<td>
+								{{ course.instructor.full_name() }}
+							</td>
+						</tr>
+						{%else%}
+						No estas inscrito a ningún curso
+						{%endfor%}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{%endblock%}

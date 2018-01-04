@@ -1,7 +1,5 @@
 {% extends "fulllayout.html" %}
 
-{% block header %}Información de curso{%endblock%}
-
 {% block content %}
 
 {% from "common/macrongos.html" import render_field %}
@@ -9,7 +7,7 @@
 	<div class="card">
 		<div class="card-header" data-background-color="purple">
 			<h4>
-				Información de curso
+				Información logistica del curso
 			</h4>
 		</div>
 		<div class="card-content">
@@ -18,8 +16,11 @@
 					{{ message }}
 				{% endfor %}
 				{{ form.hidden_tag() }}
-
-        {{ render_field(form.abierto) }}
+		<div class="checkbox checkbox-material">
+			<label>
+				{{form.abierto}} abierto para el publico
+			</label>
+		</div>
         {{ render_field(form.cupo_min, type='number') }}
         {{ render_field(form.cupo_max, type='number') }}
         {{ render_field(form.apoyo_econ) }}

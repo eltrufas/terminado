@@ -1,0 +1,38 @@
+{% extends "fulllayout.html" %}
+{% block header %}Inicio{%endblock%}
+{% set navigation_active="inicio" %}
+{% block content %}
+<div class="row">
+	<div class="col-lg-4">
+		<div class="card">
+			<div class="card-header" data-background-color="purple">
+				<h4>Bienvenido a CURSADO</h4>
+			</div>
+			<div class="card-content">
+				Hola {{ current_user.full_name() }}! Bienvenido a la plataforma
+				de gestión de cursos extra curriculares de la Universidad de Sonora
+				"CURSADO". A la derecha se encuenta la lista de cursos extracurriculares a los
+				cuales te puedes inscribir, y a la izquierda se encuentra la barra de
+				navegación, donde podrás encontrar todas las opciones posibles para gestionar
+				tus inscripciones o solicitudes de cursos.
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-8">
+		<div class="card">
+			<div class="card-header" data-background-color="purple">
+				<h4>Lista de cursos abiertos</h4>
+			</div>
+			<div class="card-content table-responsive">
+			<div class="list-group">
+				{%for curso in cursos%}
+				<a class="list-group-item" href="{{url_for('curso.course_details',course_id=curso.id)}}">{{curso.nombre}}</a>
+				{%else%}
+				No hay cursos en los cuales inscribirse...
+				{%endfor%}			
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

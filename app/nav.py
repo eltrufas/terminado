@@ -9,11 +9,14 @@ def init_nav(app):
         responsable_role = Role.query.filter(Role.name == 'responsable').one()
 
         # cosas comunes
-        navigation_bar = []
+        navigation_bar = [
+            ("Inicio", "inicio", url_for('main.home_page'),"dashboard"),
+            ("Mis cursos", "mis_cursos",url_for('curso.mis_cursos'),"note")
+        ]
 
         if current_user.is_authenticated:
 
-            # cosas del consejo
+            # cosas del lista_consejo
             if admin_role in current_user.roles:
                 navigation_bar.extend([
                     ("Lista de solicitudes","lista_solicitudes",url_for('solicitudes.lista_consejo'),"list")
@@ -30,7 +33,5 @@ def init_nav(app):
                 navigation_bar.extend([
                     ("Mis solicitudes", "mis_solicitudes", url_for('solicitudes.solicitud_list'),"list"),
                 ])
-
-        print(navigation_bar)
 
         return dict(navigation_bar=navigation_bar)

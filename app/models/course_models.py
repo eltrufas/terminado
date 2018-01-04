@@ -1,9 +1,15 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SubmitField, validators, IntegerField, DateField, TextAreaField
+from wtforms import StringField, BooleanField, SubmitField, validators, IntegerField, DateField, TextAreaField, FieldList, FormField, HiddenField
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileRequired
 from app import db
 import enum
+
+class RetroOptions(enum.Enum):
+    malo = 'Malo'
+    regular = 'Regular'
+    bueno = "Bueno"
+    excelente = "Excelente"
 
 
 class CourseStatus(enum.Enum):
@@ -16,6 +22,8 @@ class CourseStatus(enum.Enum):
     awaiting_review = 'Esperando revisión por Consejo Divisional'
     approved = 'Aprobado'
     rejected = 'Rechazado'
+    in_process = 'En proceso'
+    finalized = 'Finalizado'
 
 
 
@@ -45,6 +53,8 @@ class Course(db.Model):
     apoyo_admin = db.Column(db.Unicode(5000))
     apoyo_servicio = db.Column(db.Unicode(5000))
 
+    calificado = db.Column(db.Boolean, default=False)
+
     fecha_inicio = db.Column(db.Date)
     fecha_fin = db.Column(db.Date)
 
@@ -70,12 +80,47 @@ class Course(db.Model):
         return self.instructor.full_name() if self.instructor else self.instructor_email
 
     def solicitud_aprobada(self):
-        return self.status not in [new, awaiting_didactic_info,
-            awaiting_didactic_review, awaiting_didactic_info_correction,
-            awaiting_logistic_info, awaiting_submission, ]
+        return self.status not in [CourseStatus.new, CourseStatus.awaiting_didactic_info,
+            CourseStatus.awaiting_didactic_review, CourseStatus.awaiting_didactic_info_correction,
+            CourseStatus.awaiting_logistic_info, CourseStatus.awaiting_submission, CourseStatus.rejected]
+
+    def allow_inscription_toggle(self):
+        return self.status == CourseStatus.approved
 
     def esta_inscrito(self, user):
         return any(i.asistente == user for i in self.inscritos)
+
+    def is_in_process(self):
+        return self.status in [CourseStatus.approved, CourseStatus.in_process, CourseStatus.finalized]
+
+class Retroalimentacion(db.Model):
+    expectativas = db.Column(db.Unicode(20))
+    pertinencia = db.Column(db.Unicode(20))
+    topicos= db.Column(db.Unicode(20))
+    tiempos= db.Column(db.Unicode(20))
+    logro_objetivos= db.Column(db.Unicode(20))
+    materiales_apoyo= db.Column(db.Unicode(20))
+    aplicacion= db.Column(db.Unicode(20))
+    medios_tecnologicos= db.Column(db.Unicode(20))
+    cantidad_info= db.Column(db.Unicode(20))
+    general_curso= db.Column(db.Unicode(20))
+
+    sugerencias_curso = db.Column(db.Unicode(5000))
+
+    dominio_tema = db.Column(db.Unicode(20))
+    presentacion= db.Column(db.Unicode(20))
+    interaccion= db.Column(db.Unicode(20))
+    uso_recursos= db.Column(db.Unicode(20))
+    comunicacion= db.Column(db.Unicode(20))
+    tutoria= db.Column(db.Unicode(20))
+    extension_info= db.Column(db.Unicode(20))
+    estrategias= db.Column(db.Unicode(20))
+    general_instructor= db.Column(db.Unicode(20))
+
+    sugerencias_instructor = db.Column(db.Unicode(5000))
+
+    curso_id = db.Column(db.Integer, db.ForeignKey=('courses.id'))
+    curso = db.relationship('Curso', backref='retroalimentaciones')
 
 
 class Inscripcion(db.Model):
@@ -148,12 +193,15 @@ class DidacticInfoForm(FlaskForm):
     bibliografia = TextAreaField('Bibliografía, documentación y materiales de apoyo', validators=[
         DataRequired('El campo de Bibliografía, documentación y materiales de apoyo es obligatorio')
     ])
-    curriculum_sintetico = FileField('Curriculum sintético de el instructor', validators=[])
+    curriculum_sintetico = FileField('Curriculum sintético de el instructor', validators=[
+        FileRequired("Se requiere que subas un archivo conteniendo el curriculum sintetico del instructor")
+    ])
     antecedentes = TextAreaField('Antecedentes o habilidades necesarios de los alumnos', validators=[
         DataRequired('El campo de Antecedentes o habilidades necesarios de los alumnos es obligatorio')
     ])
     duracion = IntegerField('Duración en horas del programa', validators=[
-        DataRequired('El campo de Duración en horas del programa es obligatorio')
+        DataRequired('El campo de Duración en horas del programa es obligatorio'),
+        validators.NumberRange(1, message="El curso debe durar al menos una hora")
     ])
 
     submit = SubmitField("Enviar info")
@@ -173,10 +221,12 @@ class LogisticInfoForm(FlaskForm):
         DataRequired('El campo de abierto para el publico es obligatorio')
     ])
     cupo_min = IntegerField("Cupo minimo", validators=[
-        DataRequired('El campo de cupo minimo es obligatorio')
+        DataRequired('El campo de cupo minimo es obligatorio'),
+        validators.NumberRange(1, message="El cupo debe ser positivo")
     ])
     cupo_max = IntegerField("Cupo maximo", validators=[
-        DataRequired('El campo de cupo maximo es obligatorio')
+        DataRequired('El campo de cupo maximo es obligatorio'),
+        validators.NumberRange(1, message="El cupo debe ser positivo")
     ])
     apoyo_econ = TextAreaField("Apoyo economico", validators=[
         DataRequired('El campo de apoyo economico es obligatorio')
@@ -195,6 +245,98 @@ class LogisticInfoForm(FlaskForm):
     ])
     submit = SubmitField("Enviar info")
 
+
+class RetroalimentacionForm(FlaskForm):
+    expectativas = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+
+    pertinencia = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    topicos = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    tiempos = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    logro_objetivos = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    materiales_apoyo = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    aplicacion = SelectFie = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )ld(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    medios_tecnologicos = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    cantidad_info = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    general_curso = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+
+    sugerencias_curso = TextAreaField('Sugerencias sobre el curso', validators=[
+        DataRequired('El campo de sugerencias sobre el curso es obligatorio')
+    ])
+
+    dominio_tema = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    presentacion = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    interaccion = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    uso_recursos = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    comunicacion = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    tutoria = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    extension_info = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    estrategias = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+    general_instructor = SelectField(
+        'Programming Language',
+        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
+    )
+
+    sugerencias_instructor = TextAreaField('Sugerencias al instructor', validators=[
+        DataRequired('El campo de objetivo general es obligatorio')
+    ])
+
 class ReviewCourseForm(FlaskForm):
     approved = BooleanField('Aprobado')
     rejection_reason = StringField('Razon de rechazo', validators=[
@@ -202,3 +344,14 @@ class ReviewCourseForm(FlaskForm):
     ])
 
     submit = SubmitField("Enviar revisión")
+
+
+class EvaluarAlumnoForm(FlaskForm):
+    user_id = HiddenField()
+    user_name = HiddenField()
+    aprobado = BooleanField("Aprobado", default=False)
+
+
+class EvaluarListaAlumnosForm(FlaskForm):
+    alumnos = FieldList(FormField(EvaluarAlumnoForm))
+    submit = SubmitField("Enviar evaluación")

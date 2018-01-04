@@ -9,6 +9,7 @@ from flask_user import current_user, login_required, roles_accepted
 
 from app import db
 from app.models.user_models import UserProfileForm
+from app.models.course_models import Course
 
 # When using a Flask app factory we must use a blueprint to avoid needing 'app' for '@app.route'
 main_blueprint = Blueprint('main', __name__, template_folder='templates')
@@ -17,7 +18,8 @@ main_blueprint = Blueprint('main', __name__, template_folder='templates')
 @main_blueprint.route('/')
 @login_required
 def home_page():
-    return render_template('fulllayout.html')
+    cursos = Course.query.filter(Course.inscripciones_abiertas == True)
+    return render_template('index.html', cursos=cursos)
 
 # The User page is accessible to authenticated users (users that have logged in)
 @main_blueprint.route('/member')

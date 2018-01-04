@@ -1,0 +1,71 @@
+{% extends "fulllayout.html" %}
+{%block header%}Lista de inscritos{%endblock%}
+{%block content%}
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4 class="title">Alumnos inscritos al curso "{{curso.nombre}}"</h4>
+		</div>
+		<div class="card-content table-responsive">
+			{% if curso.calificado %}
+				{{ form.hidden_tag() }}
+				<table class="table table-hover">
+					<thead>
+						<th>Nombre del alumno</th>
+						<th>Aprobado</th>
+					</thead>
+					{% for inscripcion in curso.inscritos %}
+					<tr>
+						<td>
+							{{ inscripcion.asistente.full_name() }}
+						</td>
+						<td>
+							{{ "Si" if inscripcion.acreditado else "No" }}
+						</td>
+					</tr>
+					{%else%}
+					No hay alumnos inscritos al curso.
+					{%endfor%}
+				</table>
+
+			{% elif form is not none %}
+			<form method="POST">
+				{{ form.hidden_tag() }}
+				<table class="table table-hover">
+					<thead>
+						<th>Nombre del alumno</th>
+						<th>Aprobado</th>
+					</thead>
+					{% for alumno in form.alumnos %}
+					<tr>
+						<td>
+							{{ alumno.user_id }}
+							{{ nombres[loop.index - 1] }}
+						</td>
+						<td>
+							{{ alumno.aprobado }}
+						</td>
+					</tr>
+					{%else%}
+					No hay alumnos inscritos al curso.
+					{%endfor%}
+				</table>
+
+				{{ form.submit() }}
+
+			</form>
+			{% else %}
+
+			<ul class="list-group">
+				{%for inscripcion in curso.inscritos%}
+				<li class="list-group-item">{{inscripcion.asistente.full_name()}}</li>
+				{%else%}
+				No hay nadie inscrito a este curso...
+				{%endfor%}
+			</ul>
+
+			{% endif %}
+		</div>
+	</div>
+</div>
+{%endblock%}

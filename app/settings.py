@@ -8,6 +8,8 @@ import os
 APP_NAME = "Flask-User starter app"
 APP_SYSTEM_ERROR_SUBJECT_LINE = APP_NAME + " system error"
 
+BABEL_DEFAULT_LOCALE = 'es'
+
 # Flask settings
 CSRF_ENABLED = True
 
@@ -24,6 +26,5 @@ USER_ENABLE_EMAIL = True  # Register with Email
 USER_ENABLE_REGISTRATION = True  # Allow new users to register
 USER_ENABLE_RETYPE_PASSWORD = True  # Prompt for `retype password` in:
 USER_ENABLE_USERNAME = False  # Register and Login with username
-USER_AFTER_LOGIN_ENDPOINT = 'main.member_page'
+USER_AFTER_LOGIN_ENDPOINT = 'main.home_page'
 USER_AFTER_LOGOUT_ENDPOINT = 'user.login'
-

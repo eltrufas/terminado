@@ -14,6 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager, SQLAlchemyAdapter
 from flask_wtf.csrf import CSRFProtect
 from flask_bootstrap import Bootstrap
+from flask_babel import Babel
 from flask_user.signals import user_registered
 
 # Instantiate Flask extensions
@@ -38,6 +39,8 @@ def create_app(extra_config_settings={}):
     app.config.update(extra_config_settings)
 
     # Setup Flask-Extensions -- do this _after_ app config has been loaded
+
+    babel = Babel(app)
 
     # Setup Flask-SQLAlchemy
     db.init_app(app)
