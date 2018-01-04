@@ -14,4 +14,8 @@ $(document).ready(function() {
 			$('#rejected_field').show()
 		}
 	})
+
+	$(".clickable-row").click(function() {
+		window.location = $(this).data("href");
+	})
 })

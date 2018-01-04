@@ -14,6 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager, SQLAlchemyAdapter
 from flask_wtf.csrf import CSRFProtect
 from flask_bootstrap import Bootstrap
+from flask_user.signals import user_registered
 
 # Instantiate Flask extensions
 db = SQLAlchemy()
@@ -71,8 +72,6 @@ def create_app(extra_config_settings={}):
     # Setup an error-logger to send emails to app.config.ADMINS
     init_email_error_handler(app)
 
-
-
     # Setup Flask-User to handle user account related forms
     from .models.user_models import User, MyRegisterForm
     from .views.misc_views import user_profile_page
@@ -85,8 +84,18 @@ def create_app(extra_config_settings={}):
 
     @app.context_processor
     def utility_processor():
-        print("LUL")
         return dict(foo='bar')
+
+    from .models.course_models import Course
+
+    @user_registered.connect_via(app)
+    def _after_registration_hook(sender, user, **extra):
+        courses = Course.query.filter(Course.instructor_email == user.email)
+
+        for course in courses:
+            course.instructor = user
+
+        db.session.commit()
 
     return app
 

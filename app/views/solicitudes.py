@@ -3,6 +3,7 @@ from flask import request, url_for, current_app, abort, flash, send_file
 from flask_user import current_user, login_required, roles_accepted
 from app.util import send_email
 import tempfile
+from flask_user.signals import user_registered
 
 from os.path import splitext
 import uuid
@@ -16,6 +17,8 @@ from app.models.course_models import (StartCourseRequestForm, Course,
                                       LogisticInfoForm, ReviewDidacticInfoForm)
 
 main_blueprint = Blueprint('solicitudes', __name__, template_folder='templates')
+
+
 
 @main_blueprint.route('/solicitud/iniciar', methods=['GET', 'POST'])
 @roles_accepted('responsable', 'admin')
@@ -106,7 +109,7 @@ def obtener_info_didactica(course_id):
 
             flash('Informacion didactica enviada exitosamente.', 'success')
 
-            return redirect('.solicitud_list')
+            return redirect(url_for('.solicitud_list'))
 
     return render_template('solicitudes/obtener_info_didactica.html', form=form, course=course)
 
@@ -137,7 +140,7 @@ def revisar_info_didactica(course_id):
             course.status = CourseStatus.awaiting_didactic_info_correction
             course.reason = form.rejection_reason
             db.session.commit()
-            return redirect('.solicitud_list')
+            return redirect(url_for('.solicitud_list'))
 
     return render_template('solicitudes/revisar_info_didactica.html', form=form)
 
@@ -169,7 +172,7 @@ def corregir_info_didactica(course_id):
 
         flash('Informacion didactica enviada exitosamente.', 'success')
 
-        return redirect('.solicitud_details', course_id=course.id)
+        return redirect(url_for('.solicitud_details', course_id=course.id))
 
     return render_template('solicitudes/obtener_info_didactica.html', form=form, course=course)
 
@@ -287,7 +290,7 @@ def solicitud_details(course_id):
         return render_template('solicitudes/detalles/didactic.html', curso=course)
     elif course.status == CourseStatus.awaiting_didactic_review and current_user == course.responsable:
         form = ReviewDidacticInfoForm()
-        return render_template('solicitudes/detalles/review_didactic.html', curso=course)
+        return render_template('solicitudes/detalles/review_didactic.html', curso=course, form=form)
     elif course.status == CourseStatus.awaiting_didactic_info_correction and current_user == course.instructor:
         return render_template('solicitudes/detalles/didactic_correction.html')
     elif course.status == CourseStatus.awaiting_logistic_info and current_user == course.responsable:
