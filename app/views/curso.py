@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, render_template
 from flask import request, url_for, current_app, abort, flash, send_file
 from flask_user import current_user, login_required, roles_accepted
 from app.util import send_email
-
+from app import db
 from app.models.course_models import (StartCourseRequestForm, Course,
                                       CourseStatus, DidacticInfoForm,
                                       LogisticInfoForm, ReviewDidacticInfoForm,
