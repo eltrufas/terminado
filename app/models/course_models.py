@@ -130,7 +130,7 @@ class DidacticInfoForm(FlaskForm):
     objetivo_general = TextAreaField('Objectivo general', validators=[
         DataRequired('El campo de objetivo general es obligatorio')
     ])
-    objectivos_especificos = TextAreaField('Ojetivos_especificos', validators=[
+    objetivos_especificos = TextAreaField('Ojetivos_especificos', validators=[
         DataRequired('El campo de objetivos especificos es obligatorio')
     ])
     contenido_sintetico = TextAreaField('Contenido sintetico', validators=[

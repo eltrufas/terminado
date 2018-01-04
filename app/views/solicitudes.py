@@ -19,14 +19,6 @@ from app.models.course_models import (StartCourseRequestForm, Course,
 main_blueprint = Blueprint('solicitudes', __name__, template_folder='templates')
 
 
-@user_registered.connect_via(app)
-def _after_registration_hook(sender, user, **extra):
-    courses = Course.query.filter(Course.instructor_email == user.email)
-
-    for course in courses:
-        course.instructor = user
-
-    db.session.commit()
 
 @main_blueprint.route('/solicitud/iniciar', methods=['GET', 'POST'])
 @roles_accepted('responsable', 'admin')
@@ -117,7 +109,7 @@ def obtener_info_didactica(course_id):
 
             flash('Informacion didactica enviada exitosamente.', 'success')
 
-            return redirect('.solicitud_list')
+            return redirect(url_for('.solicitud_list'))
 
     return render_template('solicitudes/obtener_info_didactica.html', form=form, course=course)
 
@@ -148,7 +140,7 @@ def revisar_info_didactica(course_id):
             course.status = CourseStatus.awaiting_didactic_info_correction
             course.reason = form.rejection_reason
             db.session.commit()
-            return redirect('.solicitud_list')
+            return redirect(url_for('.solicitud_list'))
 
     return render_template('solicitudes/revisar_info_didactica.html', form=form)
 
@@ -180,7 +172,7 @@ def corregir_info_didactica(course_id):
 
         flash('Informacion didactica enviada exitosamente.', 'success')
 
-        return redirect('.solicitud_details', course_id=course.id)
+        return redirect(url_for('.solicitud_details', course_id=course.id))
 
     return render_template('solicitudes/obtener_info_didactica.html', form=form, course=course)
 
@@ -302,7 +294,7 @@ def solicitud_details(course_id):
     elif course.status == CourseStatus.awaiting_didactic_info_correction and current_user == course.instructor:
         return render_template('solicitudes/detalles/didactic_correction.html')
     elif course.status == CourseStatus.awaiting_logistic_info and current_user == course.responsable:
-        return render_template('solicitudes/detalles/logistic.html', curso=course)
+        return render_template('solicitudes/detalles/logistic.html',return redirect('.solicitud_return redirect('.solicitud_return redirect('.solicitud_list')list')list') curso=course)
     elif course.status == CourseStatus.awaiting_submission:
         if current_user == course.responsable:
             return render_template('solicitudes/detalles/documents.html', curso=course)
