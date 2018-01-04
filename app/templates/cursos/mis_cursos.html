@@ -1,0 +1,82 @@
+{% extends "fulllayout.html" %}
+{%block header%}Lista de cursos{%endblock%}
+{%set navigation_active="mis_cursos"%}
+{%block content%}
+<div class="col-md-12">
+	<div class="card card-nav-tabs">
+		<div class="card-header" data-background-color="purple">
+			<div class="nav-tabs-navigation">
+				<div class="nav-tabs-wrapper">
+					<span class="nav-tabs-title">Cursos:</span>
+					<ul class="nav nav-tabs" data-tabs="tabs">
+						<li class="active">
+							<a href="#responsable" data-toggle="tab">
+								<i class="material-icons">assignment</i>
+								Donde soy responsable
+							<div class="ripple-container"></div></a>
+						</li>
+						<li class="">
+							<a href="#instructor" data-toggle="tab">
+								<i class="material-icons">note</i>
+								Donde soy instructor
+							<div class="ripple-container"></div></a>
+						</li>
+						<li class="">
+							<a href="#inscrito" data-toggle="tab">
+								<i class="material-icons">face</i>
+								Donde estoy inscrito
+							<div class="ripple-container"></div></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="card-content">
+			<div class="tab-content">
+				<div class="tab-pane active" id="responsable">
+					<table class="table table-hover">
+						<thead>
+							<th>Nombre</th>
+							<th>Responsable</th>
+							<th>Estado</th>
+						</thead>
+						<tbody>
+							<tr class="cursor-pointer clickable-row" data-href="solicitud/">
+								responsable
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="instructor">
+					<table class="table table-hover">
+						<thead>
+							<th>Nombre</th>
+							<th>Responsable</th>
+							<th>Estado</th>
+						</thead>
+						<tbody>
+							<tr class="cursor-pointer clickable-row" data-href="solicitud/">
+								instructor
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane" id="inscrito">
+					<table class="table table-hover">
+						<thead>
+							<th>Nombre</th>
+							<th>Responsable</th>
+							<th>Estado</th>
+						</thead>
+						<tbody>
+							<tr class="cursor-pointer clickable-row" data-href="solicitud/">
+								inscrito
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{%endblock%}

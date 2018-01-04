@@ -9,11 +9,11 @@ def init_nav(app):
         responsable_role = Role.query.filter(Role.name == 'responsable').one()
 
         # cosas comunes
-        navigation_bar = []
+        navigation_bar = [("Mis cursos", "mis_cursos",url_for('curso.mis_cursos'),"note")]
 
         if current_user.is_authenticated:
 
-            # cosas del consejo
+            # cosas del lista_consejo
             if admin_role in current_user.roles:
                 navigation_bar.extend([
                     ("Lista de solicitudes","lista_solicitudes",url_for('solicitudes.lista_consejo'),"list")
