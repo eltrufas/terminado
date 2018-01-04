@@ -1,52 +1,64 @@
-{% extends 'basiclayout.html' %}
-
-{% block content %}
 {% from "flask_user/_macros.html" import render_field, render_submit_field %}
-<h1>{%trans%}Register{%endtrans%}</h1>
+{%extends "basiclayout.html"%}
+{% block content %}
+<!--
+you can substitue the span of reauth email for a input with the email and
+include the remember me checkbox
+-->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div class="card">
+                <h4><b>Registro</b></h4>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% from "common/macrongos.html" import render_alert %}
 
-<form action="" method="POST" novalidate formnovalidate class="form" role="form">
-    {{ form.hidden_tag() }}
+                  {% if messages %}
+                    <div class="row">
+                      <div class="col-md-12">
+                        {% for category, message in messages %}
+                          {{ render_alert(message, category) }}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endwith %}
+                <form method="POST">
+                    {{form.csrf_token}}
+                    {{ render_field(form.email, label="Correo" ) }}
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ render_field(form.first_name) }}  
+                        </div>
+                        <div class="col-lg-6">
+                            {{ render_field(form.last_name) }}  
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ render_field(form.password,label="Contraseña") }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ render_field(form.retype_password,"Repetir contraseña") }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ render_field(form.institution) }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ render_field(form.cargo,"Cargo") }}
+                        </div>
+                    </div>
 
-    {# Username or Email #}
-    {% set field = form.username if user_manager.enable_username else form.email %}
-    <div class="form-group {% if field.errors %}has-error{% endif %}">
-        {# Label on left, "Already registered? Sign in." on right #}
-        <div class="row">
-            <div class="col-xs-6">
-                <label for="{{ field.id }}" class="control-label">{{ field.label.text }}</label>
-            </div>
-            <div class="col-xs-6 text-right">
-                {% if user_manager.enable_register %}
-                    <a href="{{ url_for('user.login') }}" tabindex='290'>
-                        {%trans%}Already registered? Sign in.{%endtrans%}</a>
-                {% endif %}
+                    <button class="btn btn-info" type="submit">Registrar</button>
+                </form>
+                ¿Ya estás registrado? <a href="{{url_for('user.login')}}">Inicio de sesión</a>
             </div>
         </div>
-        {{ field(class_='form-control', tabindex=210) }}
-        {% if field.errors %}
-            {% for e in field.errors %}
-                <p class="help-block">{{ e }}</p>
-            {% endfor %}
-        {% endif %}
+        <div class="col-lg-3"></div>
     </div>
-
-    {% if user_manager.enable_email and user_manager.enable_username %}
-        {{ render_field(form.email, tabindex=220) }}
-    {% endif %}
-
-    {{ render_field(form.first_name, tabindex=240) }}
-
-    {{ render_field(form.last_name, tabindex=250) }}
-
-    {{ render_field(form.institution, tabindex=260) }}
-
-    {{ render_field(form.password, tabindex=260) }}
-
-    {% if user_manager.enable_retype_password %}
-        {{ render_field(form.retype_password, tabindex=270) }}
-    {% endif %}
-
-    {{ render_submit_field(form.submit, tabindex=280) }}
-</form>
+</div>
 
 {% endblock %}

@@ -1,12 +1,15 @@
 {% from "common/macrongos.html" import render_alert %}
-
+{%set navigation_bar = [
+        ("Mis solicitudes", "mis_solicitudes", url_for('solicitudes.solicitud_list'),"list"),
+        ("Solicitar curso", "solicitar_curso", url_for('solicitudes.create_course_request'),"assignment")
+    ]-%}
 <!doctype html>
 <html lang="es">
 
 <head>
     <meta charset="utf-8" />
-    <link rel="apple-touch-icon" sizes="76x76" href="url_for('static', filename='path/to/file')/assets/img/apple-icon.png" />
-    <link rel="icon" type="image/png" href="url_for('static', filename='path/to/file')/assets/img/favicon.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="{{url_for('static', filename='/assets/img/apple-icon.png')}}" />
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='/assets/img/favicon.png')}}" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>CursADO</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
@@ -24,26 +27,22 @@
 
 <body>
     <div class="wrapper">
-        <div class="sidebar" data-color="purple" data-image="url_for('static', filename='path/to/file')/assets/img/sidebar-1.jpg">
+        <div class="sidebar" data-color="purple" data-image="{{url_for('static', filename='/assets/img/sidebar-1.jpg')}}">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
-                	CURSADO
+                <a href="{{url_for('main.home_page')}}" class="simple-text">
+                	CursADO
                 </a>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li>
-                        <a href="{{url_for('solicitudes.solicitud_list')}}">
-                            <i class="material-icons">list</i>
-                            <p>Mis solicitudes</p>
+                    {%for text, id,href,icon in navigation_bar%}
+                    <li {% if id == navigation_active %} class="active"{%endif%}>
+                        <a href="{{href}}">
+                            <i class="material-icons">{{icon}}</i>
+                            <p>{{text}}</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{url_for('solicitudes.create_course_request')}}">
-                            <i class="material-icons">assignment</i>
-                            <p>Solicitar curso</p>
-                        </a>
-                    </li>
+                    {%endfor%}
                 </ul>
             </div>
         </div>
@@ -57,6 +56,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
+                        <a class="navbar-brand" href="#"> {%block header%}{%endblock%} </a>
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
@@ -67,7 +67,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="user/sign-out">
+                                <a href="{{url_for('user.logout')}}">
                                     <i class="material-icons">input</i> Cerrar Sesión
                                     <p class="hidden-lg hidden-md">Logout</p>
                                 </a>

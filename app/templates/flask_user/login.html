@@ -1,4 +1,5 @@
 {%extends "basiclayout.html"%}
+{% from "common/macrongos.html" import render_field_floating %}
 {% block content %}
 <!--
 you can substitue the span of reauth email for a input with the email and
@@ -12,7 +13,7 @@ include the remember me checkbox
                 <h4><b>Inicio de sesión</b></h4>
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% from "common/macrongos.html" import render_alert %}
-
+                
                   {% if messages %}
                     <div class="row">
                       <div class="col-md-12">
@@ -25,15 +26,23 @@ include the remember me checkbox
                 {% endwith %}
                 <form method="POST">
                     {{form.csrf_token}}
-                    {{form.email(class="form-control",placeholder="Correo")}}
-                    {{form.password(class="form-control",placeholder="Contraseña")}}
+                    <ul>
+                        {%for error,message in form.errors.items()%}
+                        {%for errormessage in message%}
+                            <li>{{errormessage}}</li>
+                        {%endfor%}
+                    {%endfor%}
+                    </ul>
+                    {{render_field_floating(form.email,label="Correo")}}
+                    {{render_field_floating(form.password,label="Contraseña")}}
                     <div id="remember" class="checkbox checkbox-material">
                         <label>
                             {{form.remember_me}} Mantener sesión
                         </label>
                     </div>
-                    <button class="btn btn-primary btn-block" type="submit">Iniciar sesión</button>
+                    <button class="btn btn-info btn-block" type="submit">Iniciar sesión</button>
                 </form>
+                ¿No tienes cuenta? <a href="{{url_for('user.register')}}">Registrate</a>
             </div>
         </div>
         <div class="col-lg-4"></div>

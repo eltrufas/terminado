@@ -21,3 +21,10 @@
     </button>
   </div>
 {%- endmacro %}
+
+{%macro render_field_floating(field,label)%}
+<fieldset class="form-group label-floating">
+  <label class="control-label">{{ label }}</label>
+  {{ field(class="form-control") }}
+</fieldset>
+{%endmacro%}
