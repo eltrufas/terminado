@@ -70,9 +70,9 @@ class Course(db.Model):
         return self.instructor.full_name() if self.instructor else self.instructor_email
 
     def solicitud_aprobada(self):
-        return self.status not in [new, awaiting_didactic_info,
-            awaiting_didactic_review, awaiting_didactic_info_correction,
-            awaiting_logistic_info, awaiting_submission, ]
+        return self.status not in [CourseStatus.new, CourseStatus.awaiting_didactic_info,
+            CourseStatus.awaiting_didactic_review, CourseStatus.awaiting_didactic_info_correction,
+            CourseStatus.awaiting_logistic_info, CourseStatus.awaiting_submission, CourseStatus.rejected]
 
     def esta_inscrito(self, user):
         return any(i.asistente == user for i in self.inscritos)
