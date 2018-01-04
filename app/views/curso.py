@@ -75,5 +75,4 @@ def lista_inscritos(course_id):
     course = Course.query.get(course_id)
     if not course:
         return abort(404)
-
     return render_template('cursos/inscritos.html', curso=course)

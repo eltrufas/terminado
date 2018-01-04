@@ -1,0 +1,20 @@
+{% extends "fulllayout.html" %}
+{%block header%}Lista de inscritos{%endblock%}
+{%block content%}
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4 class="title">Alumnos inscritos al curso "{{curso.nombre}}"</h4>
+		</div>
+		<div class="card-content table-responsive">
+			<ul class="list-group">
+				{%for inscripcion in curso.inscritos%}
+				<li class="list-group-item">{{inscripcion.asistente.full_name()}}</li>
+				{%else%}
+				No hay nadie inscrito a este curso...
+				{%endfor%}			
+			</ul>
+		</div>
+	</div>
+</div>
+{%endblock%}
