@@ -31,6 +31,4 @@ def init_nav(app):
                     ("Mis solicitudes", "mis_solicitudes", url_for('solicitudes.solicitud_list'),"list"),
                 ])
 
-        print(navigation_bar)
-
         return dict(navigation_bar=navigation_bar)

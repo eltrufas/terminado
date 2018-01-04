@@ -35,16 +35,24 @@
 			<div class="tab-content">
 				<div class="tab-pane active" id="responsable">
 					<table class="table table-hover">
+						{%if cursos_responsable is defined and cursos_responsable|length > 0%}
 						<thead>
 							<th>Nombre</th>
-							<th>Responsable</th>
-							<th>Estado</th>
+							<th>Instructor</th>
 						</thead>
-						<tbody>
-							<tr class="cursor-pointer clickable-row" data-href="solicitud/">
-								responsable
-							</tr>
-						</tbody>
+						{%endif%}
+						{%for course in cursos_responsable%}
+						<tr class="cursor-pointer clickable-row" data-href="solicitud/{{course.id}}">
+							<td>
+								{{course.nombre}}
+							</td>
+							<td>
+								{{ course.instructor.full_name() }}
+							</td>
+						</tr>
+						{%else%}
+						No eres instructor en ningún curso
+						{%endfor%}
 					</table>
 				</div>
 				<div class="tab-pane" id="instructor">

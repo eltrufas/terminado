@@ -70,9 +70,9 @@ class Course(db.Model):
         return self.instructor.full_name() if self.instructor else self.instructor_email
 
     def solicitud_aprobada(self):
-        return self.status not in [new, awaiting_didactic_info,
-            awaiting_didactic_review, awaiting_didactic_info_correction,
-            awaiting_logistic_info, awaiting_submission, ]
+        return self.status not in [CourseStatus.new, CourseStatus.awaiting_didactic_info,
+            CourseStatus.awaiting_didactic_review, CourseStatus.awaiting_didactic_info_correction,
+            CourseStatus.awaiting_logistic_info, CourseStatus.awaiting_submission, CourseStatus.rejected]
 
     def esta_inscrito(self, user):
         return any(i.asistente == user for i in self.inscritos)
@@ -170,28 +170,28 @@ class ReviewDidacticInfoForm(FlaskForm):
 
 class LogisticInfoForm(FlaskForm):
     abierto = BooleanField("Abierto para el publico", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de abierto para el publico es obligatorio')
     ])
     cupo_min = IntegerField("Cupo minimo", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de cupo minimo es obligatorio')
     ])
     cupo_max = IntegerField("Cupo maximo", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de cupo maximo es obligatorio')
     ])
     apoyo_econ = TextAreaField("Apoyo economico", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de apoyo economico es obligatorio')
     ])
     apoyo_admin = TextAreaField("Apoyo administrativo", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de apoyo administrativo es obligatorio')
     ])
     apoyo_servicio = TextAreaField("Apoyos de servicio existentes y solicitado", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de apoyos de servicio existentes y solicitado es obligatorio')
     ])
     fecha_inicio = DateField("Fecha de inicio", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de fecha de inicio es obligatorio')
     ])
     fecha_fin = DateField("Fecha de finalización", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de fecha de finalización es obligatorio')
     ])
     submit = SubmitField("Enviar info")
 
