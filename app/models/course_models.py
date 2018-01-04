@@ -27,6 +27,8 @@ class Course(db.Model):
     reason = db.Column(db.Unicode(500))
 
     nombre = db.Column(db.Unicode(200))
+    objetivo_general = db.Column(db.Unicode(200))
+    objetivos_especificos = db.Column(db.Unicode(200))
     contenido_sintetico = db.Column(db.Unicode(5000))
     modalidades_aprendizaje =  db.Column(db.Unicode(5000))
     modalidades_evaluacion = db.Column(db.Unicode(5000))
@@ -45,6 +47,8 @@ class Course(db.Model):
 
     fecha_inicio = db.Column(db.Date)
     fecha_fin = db.Column(db.Date)
+
+    inscripciones_abiertas = db.Column(db.Boolean, nullable=False, default=False)
 
     instructor_email = db.Column(db.String(50))
 
@@ -65,11 +69,30 @@ class Course(db.Model):
     def instructor_name_or_email(self):
         return self.instructor.full_name() if self.instructor else instructor_email
 
+    def solicitud_aprobada(self):
+        return self.status not in [new, awaiting_didactic_info,
+            awaiting_didactic_review, awaiting_didactic_info_correction,
+            awaiting_logistic_info, awaiting_submission, ]
+
+
+class Inscripcion(db.Model):
+    __tablename__ = 'inscripciones'
+    __table_args__ = (
+        db.PrimaryKeyConstraint('asistente_id', 'curso_id'),
+    )
+    asistente_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    curso_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    acreditado = db.Column(db.Boolean, nullable=True)
+
+    asistente = db.relationship('User', backref='inscriptions')
+    curso = db.relationship('Course', backref='inscritos')
+
+
 
 class RequiredIf(validators.DataRequired):
     """Validator which makes a field required if another field is set and has a truthy value.
 
-    Sources:
+    Sources:    acreditado = db.Column(db.Boolean, nullable=True)
         - http://wtforms.simplecodes.com/docs/1.0.1/validators.html
         - http://stackoverflow.com/questions/8463209/how-to-make-a-field-conditionally-optional-in-wtforms
 
@@ -100,6 +123,12 @@ class StartCourseRequestForm(FlaskForm):
 class DidacticInfoForm(FlaskForm):
     nombre = StringField('Nombre del curso', validators=[
         DataRequired('El campo de contenido sintetico es obligatorio')
+    ])
+    objetivo_general = TextAreaField('Objectivo general', validators=[
+        DataRequired('El campo de objetivo general es obligatorio')
+    ])
+    objectivos_especificos = TextAreaField('Ojetivos_especificos', validators=[
+        DataRequired('El campo de objetivos especificos es obligatorio')
     ])
     contenido_sintetico = TextAreaField('Contenido sintetico', validators=[
         DataRequired('El campo de contenido sintetico es obligatorio')
