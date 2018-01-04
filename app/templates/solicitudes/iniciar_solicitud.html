@@ -1,5 +1,6 @@
 {% extends "fulllayout.html" %}
-
+{%block header%}Solicitar curso{%endblock%}
+{%set navigation_active="solicitar_curso"%}
 {% block content %}
 
 <div class="col-lg-12">
@@ -24,7 +25,7 @@
 					<label>Correo del instructor</label>
 					{{form.instructor_email(class="form-control",id="instructor_email")}}
 				</fieldset>
-				{{form.submit(class="btn btn-primary")}}
+				{{form.submit(class="btn btn-info")}}
 			</form>
 		</div>
 	</div>
