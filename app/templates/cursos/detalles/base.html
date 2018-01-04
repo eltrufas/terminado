@@ -1,0 +1,54 @@
+{% extends "fulllayout.html" %}
+
+{% from "solicitudes/detalles/macros.html" import detalles_curso %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-9">
+    <div class="card">
+      <div class="card-header" data-background-color="purple">
+  			<h4 class="title">Detalles de la solicitud</h4>
+  		</div>
+      <div class="card-content">
+        {{ detalles_curso(curso) }}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header" data-background-color="purple">
+  			<h4 class="title">Acciones</h4>
+  		</div>
+      <div class="card-content">
+        {% block actions %}
+          {% if curso.responsable == current_user %}
+            {% if curso.inscripciones_abiertas %}
+              <a class="btn btn-danger" href="{{ url_for('cursos.toggle_inscripcion') }}">
+                Cerrar inscripciones
+              </a>
+            {% else %}
+              <a class="btn btn-success" href="{{ url_for('cursos.toggle_inscripcion') }}">
+                Abrir inscripciones
+              </a>
+            {% endif %}
+          {% endif %}
+          {% if curso.responsable == current_user or curso.instructor == current_user %}
+            <a href="{{ url_for('cursos.inscritos', course_id=curso.id) }}">
+              Lista de alumnos inscritos
+            </a>
+          {% else %}
+            {% if curso.esta_inscrito(current_user) %}
+              <button type="button" class="btn btn-secondary btn-lg" disabled>Inscrito</button>
+            {% elif curso.inscripciones_abiertas %}
+              <a href="{{ url_for() }}">Inscribirse</a>
+            {% else %}
+              <button type="button" class="btn btn-secondary btn-lg" disabled>Inscripciones cerradas</button>
+            {% endif %}
+          {% endif %}
+
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
