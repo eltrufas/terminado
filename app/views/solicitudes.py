@@ -338,6 +338,6 @@ def solicitud_details(course_id):
         return render_template('solicitudes/detalles/review.html', curso=course, form=form)
 
     if course.solicitud_aprobada():
-        return redirect(url_for('curso.detalles_curso', curso_id=course.id))
+        return redirect(url_for('curso.course_details', course_id=course.id))
 
     return render_template('solicitudes/detalles/detalles_publicos.html', curso=course)

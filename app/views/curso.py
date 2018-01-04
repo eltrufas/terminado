@@ -7,7 +7,8 @@ from app.models.course_models import (InformeForm,Retroalimentacion,Retroaliment
                                       CourseStatus, DidacticInfoForm,
                                       LogisticInfoForm, ReviewDidacticInfoForm,
                                       Inscripcion, EvaluarListaAlumnosForm, EvaluarAlumnoForm)
-
+from weasyprint import HTML
+import tempfile
 
 curso_blueprint = Blueprint('curso', __name__, template_folder='templates')
 
@@ -110,9 +111,9 @@ def retroalimentacion(course_id):
     return render_template("cursos/retroalimentacion.html",form=form,curso=course)
 
 
-@curso_blueprint_route('/curso/<int:course_id>/informe.pdf')
+@curso_blueprint.route('/curso/<int:course_id>/informe.pdf')
 @roles_accepted('responsable')
-def informe(curso_id):
+def informe(course_id):
     course = Course.query.get(course_id)
     if not course:
         return abort(404)
