@@ -67,12 +67,15 @@ class Course(db.Model):
         return self.apoyo_econ is not None
 
     def instructor_name_or_email(self):
-        return self.instructor.full_name() if self.instructor else instructor_email
+        return self.instructor.full_name() if self.instructor else self.instructor_email
 
     def solicitud_aprobada(self):
         return self.status not in [new, awaiting_didactic_info,
             awaiting_didactic_review, awaiting_didactic_info_correction,
             awaiting_logistic_info, awaiting_submission, ]
+
+    def esta_inscrito(self, user):
+        return any(i.asistente == user for i in self.inscritos)
 
 
 class Inscripcion(db.Model):
