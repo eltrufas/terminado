@@ -111,7 +111,6 @@ def retroalimentacion(course_id):
     return render_template("cursos/retroalimentacion.html",form=form,curso=course)
 
 
-<<<<<<< HEAD
 @curso_blueprint.route('/curso/<int:course_id>/constancias.zip')
 def constancias(course_id):
     course = Course.query.get(course_id)
@@ -137,10 +136,7 @@ def constancias(course_id):
     return send_file(fp, attachment_filename='documentos_{}.zip'.format(course.id))
 
 
-@curso_blueprint_route('/curso/<int:course_id>/informe.pdf')
-=======
 @curso_blueprint.route('/curso/<int:course_id>/informe.pdf')
->>>>>>> 105bb0c88bd587386245cee783425edcdb2bb194
 @roles_accepted('responsable')
 def informe(course_id):
     course = Course.query.get(course_id)
