@@ -21,7 +21,11 @@
 					{%for course in instructor_courses%}
 					<tr class="cursor-pointer clickable-row" data-href="solicitud/{{course.id}}">
 						<td>
+							{%if course.nombre is not none%}
 							{{course.nombre}}
+							{%else%}
+							Sin asignar
+							{%endif%}
 						</td>
 						<td>
 							{{ course.responsable.full_name() }}
@@ -59,7 +63,11 @@
 					{%for course in responsable_courses%}
 					<tr class="cursor-pointer clickable-row" data-href="solicitud/{{course.id}}">
 						<td>
+							{%if course.nombre is not none%}
 							{{course.nombre}}
+							{%else%}
+							Sin asignar
+							{%endif%}
 						</td>
 						<td>
 							{{ course.instructor_name_or_email() }}
