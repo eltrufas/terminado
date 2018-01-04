@@ -11,7 +11,7 @@ from app.models.course_models import (StartCourseRequestForm, Course,
 
 curso_blueprint = Blueprint('curso', __name__, template_folder='templates')
 
-@curso_blueprint.route('/curso/<int:curso_id>')
+@curso_blueprint.route('/curso/<int:course_id>')
 @login_required
 def course_details(course_id):
     course = Course.query.get(course_id)
@@ -21,7 +21,7 @@ def course_details(course_id):
     return render_template('cursos/details/base.html', curso=course)
 
 
-@curso_blueprint.route('/curso/<int:curso_id>/toggle_inscripcion')
+@curso_blueprint.route('/curso/<int:course_id>/toggle_inscripcion')
 @roles_accepted('responsable')
 def toggle_inscripcion(course_id):
     course = Course.query.get(course_id)
@@ -37,7 +37,7 @@ def toggle_inscripcion(course_id):
     return redirect(url_for('.course_details', course_id=course.id))
 
 
-@curso_blueprint.route('/curso/<int:curso_id>/inscribirse')
+@curso_blueprint.route('/curso/<int:course_id>/inscribirse')
 @login_required
 def inscribirse(course_id):
     course = Course.query.get(course_id)
