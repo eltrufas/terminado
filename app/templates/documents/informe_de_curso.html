@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Informe de curso</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Nivel de autofinanciamiento</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.autofinanciamiento }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Número de participantes</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.num_participantes() }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Número de asistentes que cubrieron los requisitos de egreso</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.num_aprobados() }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Cumplimiento de los objetivos del programa</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.cumplimiento_obj }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Número y tipo de instituciones participantes</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.numero_instituciones }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Evaluación del desempeño de los instructores por los participantes y el responsable</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">Se adjuntan los cuestionarios de evaluación que fueron llenados por los participantes.
+El instructor del curso es el mismo que el responsable del curso. Por tanto, no aplica la evaluación del responsable. </td>
+    </tr>
+    <tr>
+      <th scope="row">Evaluación del programa por los participantes</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">Se adjuntan los cuestionarios de evaluación que fueron llenados por los participantes.</td>
+    </tr>
+    <tr>
+      <th scope="row">Nivel de vinculación del programa con las necesidades del mercado laboral o de formación profesional</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.nivel_vinculacion }}</td>
+    </tr>
+
+  </tbody>
+</table>
+</body>
