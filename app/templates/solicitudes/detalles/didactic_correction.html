@@ -1,0 +1,8 @@
+{% extends "solicitudes/detalles/detalles_base.html" %}
+
+{% block actions %}
+<p>Estado de la solicitud: {{ curso.status.value }}</p>
+<p><b>Razon de rechazo</b></p>
+<p>{{ curso.reason }}</p>
+<a href="{{ url_for(solicitudes.corregir_info_didactica) }}">Corregir información didáctica</a>
+{% endblock %}

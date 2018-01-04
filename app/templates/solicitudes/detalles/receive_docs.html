@@ -1,0 +1,6 @@
+{% extends "solicitudes/detalles/detalles_base.html" %}
+
+{% block actions %}
+<p>Estado de la solicitud: {{ curso.status.value }}</p>
+<a href="{{ url_for('solicitudes.receive_docs', course_id=curso.id) }}">Confirmar recepción de documentos</a>
+{% endblock %}

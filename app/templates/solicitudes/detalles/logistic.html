@@ -1,0 +1,6 @@
+{% extends "solicitudes/detalles/detalles_base.html" %}
+
+{% block actions %}
+<p>Estado de la solicitud: {{ curso.status.value }}</p>
+<a href="{{ url_for('solicitudes.obtener_info_logistica', course_id=curso.id) }}">Proporcionar información logística</a>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% macro detalles_curso(curso) %}
+<dl>
+  <dt>Responsable del curso</dt>
+  <dd>{{ curso.responsable.full_name() }}</dd>
+  <dt>Instructor del curso</dt>
+  <dd>{{ curso.instructor_name_or_email() }}</dd>
+
+  <dt>Status</dt>
+  <dd>{{ curso.status.value }}</dd>
+
+  {% if curso.has_didactic_info() %}
+  <dt>Nombre del curso</dt>
+  <dd>{{ curso.nombre }}</dd>
+  <dt>Contenido sintético</dt>
+  <dd>{{ curso.contenido_sintetico }}</dd>
+  <dt>Modalidades o formas de conducción de los procesos de enseñanza y aprendizajes</dt>
+  <dd>{{ curso.modalidades_aprendizaje }}</dd>
+  <dt>Las modalidades y requisitos de evaluación y acreditación</dt>
+  <dd>{{ curso.modalidades_evaluacion }}</dd>
+  <dt>Perfil academico del instructor</dt>
+  <dd>{{ curso.perfil_academico }}</dd>
+  <dt>
+    <a href="{{url_for('main.get_file', filename=curso.curriculum_sintetico_filename)}}">
+      Curriculum sintético del instructor
+    </a>
+  </dt>
+  <dt>Antecedentes o habilidades necesarios de los alumnos</dt>
+  <dd>{{ curso.antecedentes }}</dd>
+  <dt>Duración en horas</dt>
+  <dd>{{ curso.duracion }}</dd>
+  {% endif %}
+  {% if curso.has_logistic_info() %}
+  <dt>Disponiblidad</dt>
+  <dd>{{ "Abierto al publico" if curso.abierto else "Solo para miembros de la universidad"}}</dd>
+  <dt>Cupo minimo</dt>
+  <dd>{{ curso.cupo_min }}</dd>
+  <dt>Cupo max</dt>
+  <dd>{{ curso.cupo_max }}</dd>
+  <dt>Apoyo económico</dt>
+  <dd>{{ curso.apoyo_econ }}</dd>
+  <dt>Apoyo administrativo</dt>
+  <dd>{{ curso.apoyo_admin }}</dd>
+  <dt>Apoyos de servicio existentes y solicitado</dt>
+  <dd>{{ curso.apoyo_servicio }}</dd>
+  <dt>Fecha inicio</dt>
+  <dd>{{ curso.fecha_inicio.strftime('%Y-%m-%d') }}</dd>
+  <dt>Fecha fin</dt>
+  <dd>{{ curso.fecha_fin.strftime('%Y-%m-%d') }}</dd>
+  {% endif %}
+</dl>
+{%- endmacro %}

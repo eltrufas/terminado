@@ -1,0 +1,10 @@
+{% extends "solicitudes/detalles/detalles_base.html" %}
+
+{% block actions %}
+<p>Estado de la solicitud: {{ curso.status.value }}</p>
+<p>
+  Es necesario que imprimas los siguientes documentos y los entregues
+  presencialmente en las oficinas del Consejo Divisional.
+</p>
+<a href="{{ url_for('solicitudes.obtener_documentos', course_id=curso.id) }}">Descargar documentos</a>
+{% endblock %}

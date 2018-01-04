@@ -1,0 +1,22 @@
+{% extends "solicitudes/detalles/detalles_base.html" %}
+
+{% block actions %}
+<p>Estado de la solicitud: {{ curso.status.value }}</p>
+
+<form method="POST" action="{{ url_for('solicitudes.revisar_info_didactica', course_id=curso.id) }}">
+  {% for error, message in form.errors.items() %}
+    {{ message }}
+  {% endfor %}
+  {{ form.hidden_tag() }}
+  <div class="checkbox checkbox-materia">
+    <label>
+      {{form.approved(id="aprobado")}} Aprobar información didactica
+    </label>
+  </div>
+  <fieldset class="form-group" id="rejected_field">
+    <label>Razon de rechazo</label>
+    {{form.rejection_reason(class="form-control",id="rejected_reason")}}
+  </fieldset>
+  {{form.submit(class="btn btn-primary")}}
+</form>
+{% endblock %}

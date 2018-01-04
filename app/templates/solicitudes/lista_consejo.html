@@ -1,0 +1,42 @@
+{% extends "fulllayout.html" %}
+
+{%block content%}
+<div class="row">
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4 class="title">Solicitudes de registro de curso pendientes de revisión</h4>
+		</div>
+		<div class="card-content table-responsive">
+			<table class="table">
+				{%if  solicitudes|length > 0%}
+				<thead>
+					<th>Nombre</th>
+          <th>Responsable</th>
+					<th>Estado</th>
+				</thead>
+				{%endif%}
+				<tbody>
+					{%for course in instructor_courses%}
+					<tr>
+						<td>
+							{{course.nombre}}
+						</td>
+            <td>
+              {{ course.responsable.first_name }}
+              {{ course.responsable.last_name }}
+            </td>
+						<td>
+							{{course.status.value}}
+						</td>
+					</tr>
+					{%else%}
+					  No hay ningun curso pendiente de revisión.
+					{%endfor%}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</div>
+{%endblock%}
