@@ -42,7 +42,7 @@
 						</thead>
 						{%endif%}
 						{%for course in cursos_responsable%}
-						<tr class="cursor-pointer clickable-row" data-href="solicitud/{{course.id}}">
+						<tr class="cursor-pointer clickable-row" data-href="curso/{{course.id}}">
 							<td>
 								{{course.nombre}}
 							</td>
@@ -51,36 +51,52 @@
 							</td>
 						</tr>
 						{%else%}
-						No eres instructor en ningún curso
+						No eres responsable en ningún curso
 						{%endfor%}
 					</table>
 				</div>
 				<div class="tab-pane" id="instructor">
 					<table class="table table-hover">
+						{%if cursos_instructor is defined and cursos_instructor|length > 0%}
 						<thead>
 							<th>Nombre</th>
 							<th>Responsable</th>
-							<th>Estado</th>
 						</thead>
-						<tbody>
-							<tr class="cursor-pointer clickable-row" data-href="solicitud/">
-								instructor
-							</tr>
-						</tbody>
+						{%endif%}
+						{%for course in cursos_instructor%}
+						<tr class="cursor-pointer clickable-row" data-href="curso/{{course.id}}">
+							<td>
+								{{course.nombre}}
+							</td>
+							<td>
+								{{ course.responsable.full_name() }}
+							</td>
+						</tr>
+						{%else%}
+						No eres instructor en ningún curso
+						{%endfor%}
 					</table>
 				</div>
 				<div class="tab-pane" id="inscrito">
 					<table class="table table-hover">
+						{%if cursos_inscritos is defined and cursos_inscritos|length > 0%}
 						<thead>
 							<th>Nombre</th>
-							<th>Responsable</th>
-							<th>Estado</th>
+							<th>Instructor</th>
 						</thead>
-						<tbody>
-							<tr class="cursor-pointer clickable-row" data-href="solicitud/">
-								inscrito
-							</tr>
-						</tbody>
+						{%endif%}
+						{%for course in cursos_inscritos%}
+						<tr class="cursor-pointer clickable-row" data-href="curso/{{course.id}}">
+							<td>
+								{{course.nombre}}
+							</td>
+							<td>
+								{{ course.instructor.full_name() }}
+							</td>
+						</tr>
+						{%else%}
+						No estas inscrito a ningún curso
+						{%endfor%}
 					</table>
 				</div>
 			</div>
