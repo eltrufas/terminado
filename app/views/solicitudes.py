@@ -3,6 +3,7 @@ from flask import request, url_for, current_app, abort, flash, send_file
 from flask_user import current_user, login_required, roles_accepted
 from app.util import send_email
 import tempfile
+from flask_user.signals import user_registered
 
 from os.path import splitext
 import uuid
@@ -16,6 +17,16 @@ from app.models.course_models import (StartCourseRequestForm, Course,
                                       LogisticInfoForm, ReviewDidacticInfoForm)
 
 main_blueprint = Blueprint('solicitudes', __name__, template_folder='templates')
+
+
+@user_registered.connect_via(app)
+def _after_registration_hook(sender, user, **extra):
+    courses = Course.query.filter(Course.instructor_email == user.email)
+
+    for course in courses:
+        course.instructor = user
+
+    db.session.commit()
 
 @main_blueprint.route('/solicitud/iniciar', methods=['GET', 'POST'])
 @roles_accepted('responsable', 'admin')
