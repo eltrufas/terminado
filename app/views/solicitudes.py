@@ -18,8 +18,6 @@ from app.models.course_models import (StartCourseRequestForm, Course,
 
 main_blueprint = Blueprint('solicitudes', __name__, template_folder='templates')
 
-
-
 @main_blueprint.route('/solicitud/iniciar', methods=['GET', 'POST'])
 @roles_accepted('responsable', 'admin')
 def create_course_request():
@@ -108,6 +106,11 @@ def obtener_info_didactica(course_id):
 
             flash('Informacion didactica enviada exitosamente.', 'success')
 
+            send_email(email,
+                'Datos diácticos enviados',
+                render_template('email/notificacion_didactica_enviada.html', course=course),
+                'jaja')
+
             return redirect(url_for('.solicitud_list'))
 
     return render_template('solicitudes/obtener_info_didactica.html', form=form, course=course)
@@ -131,6 +134,10 @@ def revisar_info_didactica(course_id):
     if form.validate_on_submit():
 
         flash('Revisión enviada exitosamente', 'success')
+        send_email(email,
+            'Revisión de datos didácticos',
+            render_template('email/revision_info_didactica.html', course=course),
+            'jaja')
         if form.approved:
             course.status = CourseStatus.awaiting_logistic_info
             db.session.commit()
@@ -170,6 +177,11 @@ def corregir_info_didactica(course_id):
         db.session.commit()
 
         flash('Informacion didactica enviada exitosamente.', 'success')
+
+        send_email(email,
+            'Datos didacticos actualizados',
+            render_template('email/notificacion_didactica_enviada.html', course=course),
+            'jaja')
 
         return redirect(url_for('.solicitud_details', course_id=course.id))
 
@@ -255,6 +267,13 @@ def receive_docs(course_id):
 
     course.status = CourseStatus.awaiting_review
 
+    send_email(email,
+        'Documentos de solicitud recibidos',
+        render_template('email/solicitud_documentos_recibidos.html', course=course),
+        'jaja')
+
+    flash("Documentos marcados como recibidos", "success")
+
     db.session.commit()
 
     return redirect(url_for('.solicitud_details', course_id=course.id))
@@ -275,6 +294,12 @@ def revisar_solicitud(course_id):
     if form.validate_on_submit():
 
         flash('Revisión enviada exitosamente', 'success')
+
+        send_email(email,
+            'Solicitud de curso revisada',
+            render_template('email/solicitud_curso_revisado.html', course=course),
+            'jaja')
+
         if form.approved:
             course.status = CourseStatus.approved
         else:
