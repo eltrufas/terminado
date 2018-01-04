@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SubmitField, validators, IntegerField, DateField, TextAreaField, FieldList, FormField, HiddenField
+from wtforms import SelectField,StringField, BooleanField, SubmitField, validators, IntegerField, DateField, TextAreaField, FieldList, FormField, HiddenField
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileRequired
 from app import db
@@ -104,6 +104,8 @@ class Course(db.Model):
         return self.status in [CourseStatus.approved, CourseStatus.in_process, CourseStatus.finalized]
 
 class Retroalimentacion(db.Model):
+    __tablename__ = "retroalimentaciones"
+    id =  db.Column(db.Integer, primary_key=True)
     expectativas = db.Column(db.Unicode(20))
     pertinencia = db.Column(db.Unicode(20))
     topicos= db.Column(db.Unicode(20))
@@ -129,8 +131,8 @@ class Retroalimentacion(db.Model):
 
     sugerencias_instructor = db.Column(db.Unicode(5000))
 
-    curso_id = db.Column(db.Integer, db.ForeignKey=('courses.id'))
-    curso = db.relationship('Curso', backref='retroalimentaciones')
+    curso_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    curso = db.relationship('Course', backref='retroalimentaciones')
 
 
 class Inscripcion(db.Model):
@@ -258,47 +260,44 @@ class LogisticInfoForm(FlaskForm):
 
 class RetroalimentacionForm(FlaskForm):
     expectativas = SelectField(
-        'Programming Language',
+        'De acuerdo a sus expectativas el curso fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
 
     pertinencia = SelectField(
-        'Programming Language',
+        'La pertinencia de los cursos fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     topicos = SelectField(
-        'Programming Language',
+        'Los tópicos tratados fueron',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     tiempos = SelectField(
-        'Programming Language',
+        'Los tiempos de presentación fueron',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     logro_objetivos = SelectField(
-        'Programming Language',
+        'El logro de los objetivo planteados fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     materiales_apoyo = SelectField(
-        'Programming Language',
+        'Los materiales de apyo fueron',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
-    aplicacion = SelectFie = SelectField(
-        'Programming Language',
-        choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
-    )ld(
-        'Programming Language',
+    aplicacion = SelectField(
+        'La aplicación de los conocimientos adquiridos fueron',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     medios_tecnologicos = SelectField(
-        'Programming Language',
+        'Los medios tecnológicos usados fueron',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     cantidad_info = SelectField(
-        'Programming Language',
+        'La cantidad de informacion fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     general_curso = SelectField(
-        'Programming Language',
+        'En general el programa fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
 
@@ -307,45 +306,47 @@ class RetroalimentacionForm(FlaskForm):
     ])
 
     dominio_tema = SelectField(
-        'Programming Language',
+        'El dominio del tema fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     presentacion = SelectField(
-        'Programming Language',
+        'La presentación de conceptos fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     interaccion = SelectField(
-        'Programming Language',
+        'La motivación e interaccion con el grupo fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     uso_recursos = SelectField(
-        'Programming Language',
+        'El uso de recursos didacticos y tecnológicos fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     comunicacion = SelectField(
-        'Programming Language',
+        'La comunicación con el grupo fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     tutoria = SelectField(
-        'Programming Language',
+        'La tutoría con el grupo fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     extension_info = SelectField(
-        'Programming Language',
+        'La extensión de la información (otras fuentes: libros, www, revistras, etc)',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     estrategias = SelectField(
-        'Programming Language',
+        'El uso de estrategis para facilitar el aprendizaje fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
     general_instructor = SelectField(
-        'Programming Language',
+        'En general el instructor fue',
         choices=[('malo', 'Malo'), ('regular', 'Regular'), ('bueno', 'Bueno'), ('excelente', 'Excelente')]
     )
 
     sugerencias_instructor = TextAreaField('Sugerencias al instructor', validators=[
         DataRequired('El campo de objetivo general es obligatorio')
     ])
+
+    submit = SubmitField("Enviar retroalimentación")
 
 class ReviewCourseForm(FlaskForm):
     approved = BooleanField('Aprobado')
