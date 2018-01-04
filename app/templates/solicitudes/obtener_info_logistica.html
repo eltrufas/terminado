@@ -19,7 +19,7 @@
 				{% endfor %}
 				{{ form.hidden_tag() }}
 
-        {{ render_field(form.abierto) }}
+        {{ render_field(form.abierto, type="checkbox") }}
         {{ render_field(form.cupo_min, type='number') }}
         {{ render_field(form.cupo_max, type='number') }}
         {{ render_field(form.apoyo_econ) }}

@@ -156,12 +156,15 @@ class DidacticInfoForm(FlaskForm):
     bibliografia = TextAreaField('Bibliografía, documentación y materiales de apoyo', validators=[
         DataRequired('El campo de Bibliografía, documentación y materiales de apoyo es obligatorio')
     ])
-    curriculum_sintetico = FileField('Curriculum sintético de el instructor', validators=[])
+    curriculum_sintetico = FileField('Curriculum sintético de el instructor', validators=[
+        FileRequired("Se requiere que subas un archivo conteniendo el curriculum sintetico del instructor")
+    ])
     antecedentes = TextAreaField('Antecedentes o habilidades necesarios de los alumnos', validators=[
         DataRequired('El campo de Antecedentes o habilidades necesarios de los alumnos es obligatorio')
     ])
     duracion = IntegerField('Duración en horas del programa', validators=[
-        DataRequired('El campo de Duración en horas del programa es obligatorio')
+        DataRequired('El campo de Duración en horas del programa es obligatorio'),
+        validators.NumberRange(1, message="El curso debe durar al menos una hora")
     ])
 
     submit = SubmitField("Enviar info")
@@ -181,10 +184,12 @@ class LogisticInfoForm(FlaskForm):
         DataRequired('El campo de abierto para el publico es obligatorio')
     ])
     cupo_min = IntegerField("Cupo minimo", validators=[
-        DataRequired('El campo de cupo minimo es obligatorio')
+        DataRequired('El campo de cupo minimo es obligatorio'),
+        validators.NumberRange(1, message="El cupo debe ser positivo")
     ])
     cupo_max = IntegerField("Cupo maximo", validators=[
-        DataRequired('El campo de cupo maximo es obligatorio')
+        DataRequired('El campo de cupo maximo es obligatorio'),
+        validators.NumberRange(1, message="El cupo debe ser positivo")
     ])
     apoyo_econ = TextAreaField("Apoyo economico", validators=[
         DataRequired('El campo de apoyo economico es obligatorio')
