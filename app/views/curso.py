@@ -109,6 +109,22 @@ def retroalimentacion(course_id):
 
     return render_template("cursos/retroalimentacion.html",form=form,curso=course)
 
+
+@curso_blueprint_route('/curso/<int:course_id>/informe.pdf')
+@roles_accepted('responsable')
+def informe(curso_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return abort(404)
+
+    wp = HTML(string=render_template('documents/informe_de_curso.html', curso=course))
+
+    fp = tempfile.TemporaryFile()
+    fp.write(wp.write_pdf())
+    fp.seek(0)
+    return send_file(fp, attachment_filename='informe.pdf'.format(course.id))
+
+
 @curso_blueprint.route('/curso/<int:course_id>/inscritos', methods=['POST', 'GET'])
 def lista_inscritos(course_id):
     course = Course.query.get(course_id)
