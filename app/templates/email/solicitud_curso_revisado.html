@@ -1,1 +1,16 @@
-{# cuando se revisaron los documentos del curso #}
+{# cuando se revisaron los documentos del curso por parte del consejo #}
+Hemos revisado la propuesta del curso con lo siguientes datos:
+
+Responsable: {{ curso.responsable.first_name }} {{ curso.responsable.last_name }}
+Instructor: {{ curso.instructor.first_name }} {{ curso.instructor.last_name }}
+Curso: {{ curso.nombre }}
+
+y hemos determinado:
+
+{% if curso.status.value ==  'Rechazado' %}
+{# rechazado FeelsBadMan #}
+El consejo divisional ha rechazado tu solicitud citando la razón: {{ curso.reason }}
+{% else %}
+El consejo divisional ha aceptado tu solicitud. Ahora ya puedes abrir las inscripciones a tu curso desde el portal
+{# aprobado FeelsGoodMan #}
+{% endif %}

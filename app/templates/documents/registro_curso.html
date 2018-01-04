@@ -1,1 +1,104 @@
-{# la tabla que se tiene que hacer #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Registro de curso</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Nombre del curso:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.nombre }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Objetivo general:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.objetivo_general }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Objetivos especificos:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.objetivos_especificos }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Contenido sintético:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.contenido_sintetico }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Modalidades o formas de conducción de los procesos de enseñanza y aprendizajes </th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.modalidades_aprendizaje }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Requisitos de evaluación y acreditación:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.modalidades_evaluacion }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Bibliografía, documentación y materiales de apoyo:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.bibliografia }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Perfil academico del responsable:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.perfil_academico }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Antecedentes o habilidades necesarios de los alumnos:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.antecedentes }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Duración en horas del programa:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.duracion }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Indicación si es abierto o exclusivo para los miembros de la comunidad universitaria:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.abierto }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Cupos máximo:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.cupo_max }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Cupos mínimo:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.cupo_min }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Apoyo económico:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.apoyo_econ }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Apoyo administrativo:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.apoyo_admin }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Apoyos de servicio existentes y solicitado:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.apoyo_servicio }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Fecha de inicio del programa:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.fecha_inicio }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Fecha de terminación del programa:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.fecha_fin }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Correo de instructor:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ instructor_email }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Correo del responsable:</th>
+      <td width="80%" style="word-break: break-word; white-space: initial; overflow: hidden;">{{ curso.responsable.email }}</td>
+    </tr>
+
+  </tbody>
+</table>
+</body>

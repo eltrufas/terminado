@@ -1,2 +1,4 @@
 {# correo enviado para solicitar información didactica #}
-Hola, picale  <a href="{{ url_for('solicitudes.obtener_info_didactica', course_id=course.id, _external=True) }}">aqui</a>
+El responsable del curso {{ curso.responsable.first_name }} {{ curso.responsable.last_name }} está solicitando
+la información didactica del curso {{ curso.nombre }}. Puedes dar click en el siguiente enlace para proporcionar dicha información
+<a href="{{ url_for('solicitudes.obtener_info_didactica', course_id=course.id, _external=True) }}">Proporcionar información</a>
