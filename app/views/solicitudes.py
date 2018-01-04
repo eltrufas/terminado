@@ -290,7 +290,7 @@ def solicitud_details(course_id):
         return render_template('solicitudes/detalles/didactic.html', curso=course)
     elif course.status == CourseStatus.awaiting_didactic_review and current_user == course.responsable:
         form = ReviewDidacticInfoForm()
-        return render_template('solicitudes/detalles/review_didactic.html', curso=course)
+        return render_template('solicitudes/detalles/review_didactic.html', curso=course, form=form)
     elif course.status == CourseStatus.awaiting_didactic_info_correction and current_user == course.instructor:
         return render_template('solicitudes/detalles/didactic_correction.html')
     elif course.status == CourseStatus.awaiting_logistic_info and current_user == course.responsable:
