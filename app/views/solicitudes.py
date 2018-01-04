@@ -230,7 +230,7 @@ def lista_consejo():
         CourseStatus.awaiting_submission,
         CourseStatus.awaiting_review])).all()
 
-    return render_template('solicitud/lista_consejo.html', solicitudes=pending_courses)
+    return render_template('solicitudes/lista_consejo.html', solicitudes=pending_courses)
 
 
 @main_blueprint.route('/solicitud/<int:course_id>/receive_docs')
