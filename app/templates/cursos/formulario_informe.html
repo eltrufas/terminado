@@ -1,4 +1,4 @@
-{% extends fulllayout.html %}
+{% extends "fulllayout.html" %}
 
 {% from "common/macrongos.html" import render_field %}
 {% block content %}
@@ -16,9 +16,9 @@
 				{% endfor %}
 				{{ form.hidden_tag() }}
 				{{render_field(form.autofinanciamiento)}}
-        {{render_field(cumplimiento_obj)}}
-        {{render_field(numero_instituciones)}}
-        {{render_field(nivel_vinculacion)}}
+		        {{render_field(form.cumplimiento_obj)}}
+		        {{render_field(form.numero_instituciones)}}
+		        {{render_field(form.nivel_vinculacion)}}
 
 				{{form.submit(class="btn btn-primary")}}
 			</form>

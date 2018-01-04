@@ -3,7 +3,7 @@ from flask import request, url_for, current_app, abort, flash, send_file
 from flask_user import current_user, login_required, roles_accepted
 from app.util import send_email
 from app import db
-from app.models.course_models import (Retroalimentacion,RetroalimentacionForm,StartCourseRequestForm, Course,
+from app.models.course_models import (InformeForm,Retroalimentacion,RetroalimentacionForm,StartCourseRequestForm, Course,
                                       CourseStatus, DidacticInfoForm,
                                       LogisticInfoForm, ReviewDidacticInfoForm,
                                       Inscripcion, EvaluarListaAlumnosForm, EvaluarAlumnoForm)
@@ -36,7 +36,7 @@ def toggle_inscripcion(course_id):
 
     return redirect(url_for('.course_details', course_id=course.id))
 
-@curso_blueprint.route('/curso/<int:course_id>/info_informe')
+@curso_blueprint.route('/curso/<int:course_id>/info_informe',methods=["POST","GET"])
 def info_informe(course_id):
     course = Course.query.get(course_id)
     if not course:
@@ -55,7 +55,7 @@ def info_informe(course_id):
         flash('Informacion guardada', 'success')
         return redirect(url_for('.course_details', course_id=course.id))
 
-    return render_template('formulario_informe.html', form=form, curso=course)
+    return render_template('cursos/formulario_informe.html', form=form, curso=course)
 
 
 @curso_blueprint.route('/curso/<int:course_id>/inscribirse')
