@@ -76,6 +76,9 @@ class Course(db.Model):
             CourseStatus.awaiting_didactic_review, CourseStatus.awaiting_didactic_info_correction,
             CourseStatus.awaiting_logistic_info, CourseStatus.awaiting_submission, CourseStatus.rejected]
 
+    def allow_inscription_toggle(self):
+        return self.status == CourseStatus.approved
+
     def esta_inscrito(self, user):
         return any(i.asistente == user for i in self.inscritos)
 

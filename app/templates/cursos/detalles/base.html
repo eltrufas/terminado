@@ -21,7 +21,7 @@
   		</div>
       <div class="card-content">
         {% block actions %}
-          {% if curso.responsable == current_user %}
+          {% if curso.responsable == current_user and curso.allow_inscription_toggle() %}
             {% if curso.inscripciones_abiertas %}
               <a class="btn btn-danger" href="{{ url_for('curso.toggle_inscripcion', course_id=curso.id) }}">
                 Cerrar inscripciones
