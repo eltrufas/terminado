@@ -16,6 +16,8 @@ class CourseStatus(enum.Enum):
     awaiting_review = 'Esperando revisión por Consejo Divisional'
     approved = 'Aprobado'
     rejected = 'Rechazado'
+    in_process = 'En proceso'
+    finalized = 'Finalizado'
 
 
 
@@ -76,6 +78,9 @@ class Course(db.Model):
 
     def esta_inscrito(self, user):
         return any(i.asistente == user for i in self.inscritos)
+
+    def is_in_process(self):
+        return self.status in [CourseStatus.approved, CourseStatus.in_process, CourseStatus.finalized]
 
 
 class Inscripcion(db.Model):
