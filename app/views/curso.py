@@ -50,6 +50,11 @@ def info_informe(course_id):
     if form.validate_on_submit():
         form.populate_obj(course)
 
+        db.session.commit()
+
+        flash('Informacion guardada', 'success')
+        return redirect(url_for('.course_details', course_id=course.id))
+
     return render_template('formulario_informe.html', form=form, curso=course)
 
 
@@ -93,7 +98,13 @@ def retroalimentacion(course_id):
     form = RetroalimentacionForm()
 
     if form.validate_on_submit():
-        pass
+        retro = Retroalimentacion(form)
+        retro.curso = curso
+
+        db.session.add(retro)
+
+        db.session.commit()
+        return redirect(url_for('.course_details', course_id=course.id))
 
     return render_template("cursos/retroalimentacion.html",form=form,curso=course)
 
