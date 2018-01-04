@@ -60,7 +60,11 @@ class Course(db.Model):
 
     inscripciones_abiertas = db.Column(db.Boolean, nullable=False, default=False)
 
-    instructor_email = db.Column(db.String(50))
+    instructor_email = db.Column(db.Unicode(5000))
+    autofinanciamiento = db.Column(db.Unicode(5000))
+    cumplimiento_obj = db.Column(db.Unicode(5000))
+    numero_instituciones = db.Column(db.Unicode(5000))
+    nivel_vinculacion = db.Column(db.Unicode(5000))
 
     responsable_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     responsable = db.relationship("User", foreign_keys=[responsable_id],
@@ -69,6 +73,12 @@ class Course(db.Model):
     instructor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     instructor = db.relationship("User", foreign_keys=[instructor_id],
                                  backref='instructor_courses')
+
+    def num_participantes(self):
+        return len(self.inscritos)
+
+    def num_aprobados(self):
+        return len([ins for ins in self.inscritos if ins.acreditado])
 
     def has_didactic_info(self):
         return self.nombre is not None
@@ -355,3 +365,14 @@ class EvaluarAlumnoForm(FlaskForm):
 class EvaluarListaAlumnosForm(FlaskForm):
     alumnos = FieldList(FormField(EvaluarAlumnoForm))
     submit = SubmitField("Enviar evaluación")
+
+class InformeForm(FlaskForm):
+    autofinanciamiento = TextAreaField('Nivel de autofinanciamiento', validators=[
+    ])
+    cumplimiento_obj = TextAreaField('Cumplimiento de los objetivos del curso', validators=[
+    ])
+    numero_instituciones = TextAreaField('Cumplimiento de los objetivos del curso', validators=[
+    ])
+    nivel_vinculacion = TextAreaField('Nivel de vinculación del programa con las necesidades del mercado laboral o de formación profesional.')
+
+    submit = SubmitField("Enviar resultados")

@@ -8,8 +8,6 @@ from app.models.course_models import (StartCourseRequestForm, Course,
                                       LogisticInfoForm, ReviewDidacticInfoForm,
                                       Inscripcion, EvaluarListaAlumnosForm, EvaluarAlumnoForm)
 
-import re
-
 
 curso_blueprint = Blueprint('curso', __name__, template_folder='templates')
 
@@ -37,6 +35,22 @@ def toggle_inscripcion(course_id):
     db.session.commit()
 
     return redirect(url_for('.course_details', course_id=course.id))
+
+@curso_blueprint.route('/curso/<int:course_id>/info_informe')
+def info_informe(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return abort(404)
+
+    if course.responsable != current_user:
+        return abort(403)
+
+    form = InformeForm()
+
+    if form.validate_on_submit():
+        form.populate_obj(course)
+
+    return render_template('formulario_informe.html', form=form, curso=course)
 
 
 @curso_blueprint.route('/curso/<int:course_id>/inscribirse')
