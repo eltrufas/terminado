@@ -1,0 +1,28 @@
+{% extends fulllayout.html %}
+
+{% from "common/macrongos.html" import render_field %}
+{% block content %}
+<div class="col-lg-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4>
+				Resultados del curso "{{ curso.nombre }}"
+			</h4>
+		</div>
+		<div class="card-content">
+			<form method="POST">
+				{% for error, message in form.errors.items() %}
+					{{ message }}
+				{% endfor %}
+				{{ form.hidden_tag() }}
+				{{render_field(form.autofinanciamiento)}}
+        {{render_field(cumplimiento_obj)}}
+        {{render_field(numero_instituciones)}}
+        {{render_field(nivel_vinculacion)}}
+
+				{{form.submit(class="btn btn-primary")}}
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}
