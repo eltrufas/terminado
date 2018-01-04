@@ -3,11 +3,12 @@ from flask import request, url_for, current_app, abort, flash, send_file
 from flask_user import current_user, login_required, roles_accepted
 from app.util import send_email
 from app import db
-from app.models.course_models import (Retroalimentacion,RetroalimentacionForm,StartCourseRequestForm, Course,
+from app.models.course_models import (InformeForm,Retroalimentacion,RetroalimentacionForm,StartCourseRequestForm, Course,
                                       CourseStatus, DidacticInfoForm,
                                       LogisticInfoForm, ReviewDidacticInfoForm,
                                       Inscripcion, EvaluarListaAlumnosForm, EvaluarAlumnoForm)
-
+from weasyprint import HTML
+import tempfile
 
 curso_blueprint = Blueprint('curso', __name__, template_folder='templates')
 
@@ -36,7 +37,7 @@ def toggle_inscripcion(course_id):
 
     return redirect(url_for('.course_details', course_id=course.id))
 
-@curso_blueprint.route('/curso/<int:course_id>/info_informe')
+@curso_blueprint.route('/curso/<int:course_id>/info_informe',methods=["POST","GET"])
 def info_informe(course_id):
     course = Course.query.get(course_id)
     if not course:
@@ -55,7 +56,7 @@ def info_informe(course_id):
         flash('Informacion guardada', 'success')
         return redirect(url_for('.course_details', course_id=course.id))
 
-    return render_template('formulario_informe.html', form=form, curso=course)
+    return render_template('cursos/formulario_informe.html', form=form, curso=course)
 
 
 @curso_blueprint.route('/curso/<int:course_id>/inscribirse')
@@ -110,6 +111,7 @@ def retroalimentacion(course_id):
     return render_template("cursos/retroalimentacion.html",form=form,curso=course)
 
 
+<<<<<<< HEAD
 @curso_blueprint.route('/curso/<int:course_id>/constancias.zip')
 def constancias(course_id):
     course = Course.query.get(course_id)
@@ -136,8 +138,11 @@ def constancias(course_id):
 
 
 @curso_blueprint_route('/curso/<int:course_id>/informe.pdf')
+=======
+@curso_blueprint.route('/curso/<int:course_id>/informe.pdf')
+>>>>>>> 105bb0c88bd587386245cee783425edcdb2bb194
 @roles_accepted('responsable')
-def informe(curso_id):
+def informe(course_id):
     course = Course.query.get(course_id)
     if not course:
         return abort(404)
