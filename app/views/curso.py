@@ -3,7 +3,7 @@ from flask import request, url_for, current_app, abort, flash, send_file
 from flask_user import current_user, login_required, roles_accepted
 from app.util import send_email
 from app import db
-from app.models.course_models import (StartCourseRequestForm, Course,
+from app.models.course_models import (RetroalimentacionForm,StartCourseRequestForm, Course,
                                       CourseStatus, DidacticInfoForm,
                                       LogisticInfoForm, ReviewDidacticInfoForm,
                                       Inscripcion, EvaluarListaAlumnosForm, EvaluarAlumnoForm)
@@ -71,6 +71,17 @@ def mis_cursos():
         cursos_responsable=cursos_responsable,
         cursos_instructor=cursos_instructor)
 
+@curso_blueprint.route('/curso/<int:course_id>/retroalimentacion', methods=['POST', 'GET'])
+def retroalimentacion(course_id):
+    course = Course.query.get(course_id)
+    if not course:
+        return abort(404)
+    form = RetroalimentacionForm()
+
+    if form.validate_on_submit():
+        pass
+
+    return render_template("cursos/retroalimentacion.html",form=form,curso=course)
 
 @curso_blueprint.route('/curso/<int:course_id>/inscritos', methods=['POST', 'GET'])
 def lista_inscritos(course_id):

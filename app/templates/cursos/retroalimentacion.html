@@ -1,0 +1,111 @@
+{% extends "fulllayout.html" %}
+
+{% block content %}
+
+<div class="col-lg-12">
+	<div class="card">
+		<div class="card-header" data-background-color="purple">
+			<h4>
+				Retroalimentación
+			</h4>
+		</div>
+		<div class="card-content">
+
+			<form method="POST" enctype="multipart/form-data">
+				{% for error, message in form.errors.items() %}
+					{{ message }}
+				{% endfor %}
+				{{ form.hidden_tag() }}
+				<h4>Información del curso</h4>
+				<fieldset class="form-group">
+					<label>{{form.expectativas.label}}</label>
+					{{ form.expectativas(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.pertinencia.label}}</label>
+					{{ form.pertinencia(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.topicos.label}}</label>
+					{{ form.topicos(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.tiempos.label}}</label>
+					{{ form.tiempos(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.logro_objetivos.label}}</label>
+					{{ form.logro_objetivos(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.materiales_apoyo.label}}</label>
+					{{ form.materiales_apoyo(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.aplicacion.label}}</label>
+					{{ form.aplicacion(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.medios_tecnologicos.label}}</label>
+					{{ form.medios_tecnologicos(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.cantidad_info.label}}</label>
+					{{ form.cantidad_info(class="form-control",id="curriculum_sintetico") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.general_curso.label}}</label>
+					{{ form.general_curso(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.sugerencias_curso.label}}</label>
+					{{ form.sugerencias_curso(class="form-control") }}
+				</fieldset>
+				<hr>
+				<h4>Información del instructor</h4>
+				<fieldset class="form-group">
+					<label>{{form.dominio_tema.label}}</label>
+					{{ form.dominio_tema(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.presentacion.label}}</label>
+					{{ form.presentacion(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.interaccion.label}}</label>
+					{{ form.interaccion(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.uso_recursos.label}}</label>
+					{{ form.uso_recursos(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.comunicacion.label}}</label>
+					{{ form.comunicacion(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.tutoria.label}}</label>
+					{{ form.tutoria(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.extension_info.label}}</label>
+					{{ form.extension_info(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.estrategias.label}}</label>
+					{{ form.estrategias(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.general_instructor.label}}</label>
+					{{ form.general_instructor(class="form-control") }}
+				</fieldset>
+				<fieldset class="form-group">
+					<label>{{form.sugerencias_instructor.label}}</label>
+					{{ form.sugerencias_instructor(class="form-control") }}
+				</fieldset>
+				{{form.submit(class="btn btn-primary")}}
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}
