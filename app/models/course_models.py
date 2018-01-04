@@ -5,6 +5,7 @@ from flask_wtf.file import FileField, FileRequired
 from app import db
 import enum
 
+
 class CourseStatus(enum.Enum):
     new = 'Nuevo'
     awaiting_didactic_info = 'Esperando información didactica'
@@ -54,6 +55,15 @@ class Course(db.Model):
     instructor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     instructor = db.relationship("User", foreign_keys=[instructor_id],
                                  backref='instructor_courses')
+
+    def has_didactic_info(self):
+        return self.nombre is not None
+
+    def has_logistic_info(self):
+        return self.apoyo_econ is not None
+
+    def instructor_name_or_email(self):
+        return self.instructor.full_name() if self.instructor else instructor_email
 
 
 class RequiredIf(validators.DataRequired):
@@ -153,3 +163,11 @@ class LogisticInfoForm(FlaskForm):
     ])
 
     submit = SubmitField("Enviar info")
+
+class ReviewCourseForm(FlaskForm):
+    approved = BooleanField('Aprobado')
+    rejection_reason = StringField('Razon de rechazo', validators=[
+        RequiredIf('approved', 'El campo de Razon de rechazo es requerido.', negate=True)
+    ])
+
+    submit = SubmitField("Enviar revisión")

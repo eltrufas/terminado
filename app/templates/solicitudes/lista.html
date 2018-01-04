@@ -12,6 +12,7 @@
 				{%if instructor_courses is defined and instructor_courses|length > 0%}
 				<thead>
 					<th>Nombre</th>
+					<th>Responsable</th>
 					<th>Estado</th>
 				</thead>
 				{%endif%}
@@ -22,7 +23,10 @@
 							{{course.nombre}}
 						</td>
 						<td>
-							{{course.status}}
+							{{ course.responsable.full_name() }}
+						</td>
+						<td>
+							{{course.status.value}}
 						</td>
 					</tr>
 					{%else%}
@@ -43,9 +47,10 @@
 		</div>
 		<div class="card-content table-responsive">
 			<table class="table">
-				{%if instructor_courses is defined and instructor_courses|length > 0%}
+				{%if responsable_courses is defined and responsable_courses|length > 0%}
 				<thead>
 					<th>Nombre</th>
+					<th>Instructor</th>
 					<th>Estado</th>
 				</thead>
 				{%endif%}
@@ -56,7 +61,10 @@
 							{{course.nombre}}
 						</td>
 						<td>
-							{{course.status}}
+							{{ course.instructor_name_or_email() }}
+						</td>
+						<td>
+							{{ course.status.value }}
 						</td>
 					</tr>
 					{%else%}

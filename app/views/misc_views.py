@@ -4,7 +4,7 @@
 
 
 from flask import Blueprint, redirect, render_template
-from flask import request, url_for
+from flask import request, url_for, send_file
 from flask_user import current_user, login_required, roles_accepted
 
 from app import db
@@ -53,3 +53,7 @@ def user_profile_page():
     # Process GET or invalid POST
     return render_template('pages/user_profile_page.html',
                            form=form)
+
+@main_blueprint.route('/files/<filename>')
+def get_file(filename):
+    return send_file('../files/{}'.format(filename), attachment_filename=filename)

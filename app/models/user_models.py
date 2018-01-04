@@ -33,6 +33,8 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary='users_roles',
                             backref=db.backref('users', lazy='dynamic'))
 
+    def full_name(self):
+        return "{} {}".format(self.first_name, self.last_name)
 
 
 
