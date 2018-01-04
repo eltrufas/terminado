@@ -170,28 +170,28 @@ class ReviewDidacticInfoForm(FlaskForm):
 
 class LogisticInfoForm(FlaskForm):
     abierto = BooleanField("Abierto para el publico", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de abierto para el publico es obligatorio')
     ])
     cupo_min = IntegerField("Cupo minimo", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de cupo minimo es obligatorio')
     ])
     cupo_max = IntegerField("Cupo maximo", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de cupo maximo es obligatorio')
     ])
     apoyo_econ = TextAreaField("Apoyo economico", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de apoyo economico es obligatorio')
     ])
     apoyo_admin = TextAreaField("Apoyo administrativo", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de apoyo administrativo es obligatorio')
     ])
     apoyo_servicio = TextAreaField("Apoyos de servicio existentes y solicitado", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de apoyos de servicio existentes y solicitado es obligatorio')
     ])
     fecha_inicio = DateField("Fecha de inicio", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de fecha de inicio es obligatorio')
     ])
     fecha_fin = DateField("Fecha de finalización", validators=[
-        DataRequired('El campo de Perfil academico del responsable es obligatorio')
+        DataRequired('El campo de fecha de finalización es obligatorio')
     ])
     submit = SubmitField("Enviar info")
 
