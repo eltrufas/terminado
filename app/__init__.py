@@ -50,8 +50,9 @@ def create_app(extra_config_settings={}):
     # Setup WTForms CSRFProtect
     csrf_protect.init_app(app)
 
-    # Setup Flask-Bootstrap
-    Bootstrap(app)
+    from app.nav import init_nav
+
+    init_nav(app)
 
     # Register blueprints
     from app.views.misc_views import main_blueprint
@@ -70,6 +71,8 @@ def create_app(extra_config_settings={}):
     # Setup an error-logger to send emails to app.config.ADMINS
     init_email_error_handler(app)
 
+
+
     # Setup Flask-User to handle user account related forms
     from .models.user_models import User, MyRegisterForm
     from .views.misc_views import user_profile_page
@@ -79,6 +82,11 @@ def create_app(extra_config_settings={}):
                                register_form=MyRegisterForm,  # using a custom register form with UserProfile fields
                                user_profile_view_function=user_profile_page,
     )
+
+    @app.context_processor
+    def utility_processor():
+        print("LUL")
+        return dict(foo='bar')
 
     return app
 

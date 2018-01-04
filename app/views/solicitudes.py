@@ -249,6 +249,7 @@ def receive_docs(course_id):
 
     return redirect(url_for('.solicitud_details', course_id=course.id))
 
+
 @main_blueprint.route('/solicitud/<int:course_id>/revisar', methods=['POST'])
 @roles_accepted('admin')
 def revisar_solicitud(course_id):
@@ -281,8 +282,6 @@ def solicitud_details(course_id):
         return abort(404)
 
     admin_role = Role.query.filter(Role.name == 'admin').one()
-
-    print(current_user.roles)
 
     if course.status == CourseStatus.awaiting_didactic_info and current_user == course.instructor:
         return render_template('solicitudes/detalles/didactic.html', curso=course)
